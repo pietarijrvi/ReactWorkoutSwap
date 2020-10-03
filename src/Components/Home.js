@@ -2,6 +2,9 @@ import React from "react";
 import {Table} from 'react-bootstrap'
 import axios from 'axios';
 
+//const apiUrl = 'http://localhost:3001/notes';
+const apiUrl = 'http://localhost:9000/api/json';
+
 export default class Home extends React.Component {
     state = {
         notes: [],
@@ -9,11 +12,14 @@ export default class Home extends React.Component {
         noteId: ''
     };
 
+
+
     componentDidMount() {
-        axios.get('http://localhost:3001/notes')
+        axios.get(apiUrl)
             .then(res => {
                 console.log(res);
-                this.setState({notes: res.data})
+                this.setState({notes: res.data.notes});
+                console.log("state", this.state.notes);
             });
 
     }

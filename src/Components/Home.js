@@ -1,6 +1,9 @@
 import React from "react";
-import {Table} from 'react-bootstrap'
+//import {Table} from 'react-bootstrap'
 import axios from 'axios';
+import Accordion from 'react-bootstrap/Accordion'
+import Card from "react-bootstrap/Card";
+import Button from 'react-bootstrap/Button'
 
 export default class Home extends React.Component {
     state = {
@@ -42,24 +45,26 @@ export default class Home extends React.Component {
     render() {
         return (
             <div className="Home">
-                <Table striped bordered hover size="sm" variant='dark'>
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Content</th>
-                        <th>Date</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+                <div className="AccordionList">
                     {this.state.notes.map(note => (
-                        <tr>
-                            <td>{note.id}</td>
-                            <td>{note.content}</td>
-                            <td>{note.date}</td>
-                        </tr>
+                        <Accordion defaultActiveKey="1">
+                            <Card>
+                                <Card.Header>
+                                    <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                                        {note.id}. {note.name}
+                                    </Accordion.Toggle>
+                                </Card.Header>
+                                <Accordion.Collapse eventKey="0">
+                                    <Card.Body>
+                                        {note.content}
+                                        {note.date}
+                                    </Card.Body>
+                                </Accordion.Collapse>
+                            </Card>
+                        </Accordion>
                     ))}
-                    </tbody>
-                </Table>
+                </div>
+
                 <form onSubmit={this.handleSubmit}>
                     <label>
                         Content:

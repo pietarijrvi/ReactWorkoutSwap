@@ -9,7 +9,7 @@ const apiWorkoutsUrl = 'http://localhost:9000/api/v1/workouts/';
 
 export default class Home extends React.Component {
     state = {
-        notes: [],
+        workouts: [],
         noteContent: '',
         noteId: ''
     };
@@ -20,8 +20,8 @@ export default class Home extends React.Component {
         axios.get(apiWorkoutsUrl)
             .then(res => {
                 console.log(res);
-                this.setState({notes: res.data.notes});
-                console.log("state", this.state.notes);
+                this.setState({workouts: res.data});
+                console.log("state", this.state.workouts);
             }).catch(err => {
                 console.log(err);
         });
@@ -66,18 +66,22 @@ export default class Home extends React.Component {
         return (
             <div className="Home">
                 <div className="AccordionList">
-                    {this.state.notes.map(note => (
+                    {this.state.workouts.map(workout => (
                         <Accordion defaultActiveKey="1">
                             <Card>
                                 <Card.Header>
                                     <Accordion.Toggle as={Button} variant="link" eventKey="0">
-                                        {note.id}. {note.name}
+                                        {workout.id}. {workout.title}
                                     </Accordion.Toggle>
                                 </Card.Header>
                                 <Accordion.Collapse eventKey="0">
                                     <Card.Body>
-                                        {note.content}
-                                        {note.date}
+                                        {workout.woDesc}
+                                        {workout.duration}
+                                        {workout.equipmentRequired}
+                                        {workout.rating}
+                                        {workout.createDate}
+                                        {workout.createBy}
                                     </Card.Body>
                                 </Accordion.Collapse>
                             </Card>

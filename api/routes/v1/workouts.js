@@ -10,15 +10,15 @@ router.get('/test', function(req, res) {
 });
 
 router.get('/', function(req, res) {
-    res.json(data);
+    //res.json(data);
 
-    /*
+
     const limit=50;
 
     //WorkoutId, CreateDate, Title, Description, Duration, EquipmentRequired, Rating, CreatedBy
     const sql = SqlString.format("SELECT *"
-        + " FROM Workouts"
-        + " ORDER BY Workouts.Rating"
+        + " FROM workouts"
+        + " ORDER BY workouts.rating"
         + " LIMIT ?", [limit]);
 
     con.get().query(sql, function (err, result) {
@@ -28,7 +28,7 @@ router.get('/', function(req, res) {
         console.log(result);
         res.json(result);
     });
-     */
+
 });
 
 router.post('/', [

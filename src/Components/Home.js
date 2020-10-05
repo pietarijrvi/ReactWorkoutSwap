@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button'
 
 //const apiUrl = 'http://localhost:3001/notes';
 const apiUrl = 'http://localhost:9000/api/json';
+const postUrl = 'http://localhost:9000/api/workouts';
 
 export default class Home extends React.Component {
     state = {
@@ -33,12 +34,13 @@ export default class Home extends React.Component {
 
     handleSubmit = event => {
         event.preventDefault();
+        console.log("noteIdPost", this.state.noteId);
         const note = {
             content: this.state.noteContent,
             id: this.state.noteId
         };
 
-        axios.post('http://localhost:3001/notes', {note})
+        axios.post(postUrl, note)
             .then(res => {
                 console.log(res);
                 console.log(res.data);

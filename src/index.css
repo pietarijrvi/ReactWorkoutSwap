@@ -17,5 +17,21 @@ code {
 }
 
 .AccordionList{
-  margin-bottom: 2em;
+  width: 75%;
+  margin-left: 1em;
+}
+
+
+.card-header{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+#FavoriteButton{
+  justify-self: flex-end;
+}
+
+.SearchBar{
+  margin-left: 1em;
 }

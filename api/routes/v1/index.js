@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
 
-router.use('/v1', require('./v1/index'));
+router.use('/workouts', require('./workouts'));
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  res.render('index', { title: 'Express' });
+    res.render('index', { title: 'API v1' });
 });
 
 

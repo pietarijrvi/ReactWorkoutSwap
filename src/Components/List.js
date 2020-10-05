@@ -1,5 +1,4 @@
 import React from "react";
-//import {Table} from 'react-bootstrap'
 import axios from 'axios';
 import Accordion from 'react-bootstrap/Accordion'
 import Card from "react-bootstrap/Card";
@@ -9,8 +8,7 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
 
-//const apiUrl = 'http://localhost:3001/notes';
-const apiUrl = 'http://localhost:9000/api/json';
+const apiWorkoutsUrl = "http://localhost:9000/api/v1/workouts/";
 
 
 export default class List extends React.Component {
@@ -20,16 +18,17 @@ export default class List extends React.Component {
         noteId: ''
     };
 
-
-
     componentDidMount() {
-        axios.get(apiUrl)
+        axios
+            .get(apiWorkoutsUrl)
             .then(res => {
                 console.log(res);
-                this.setState({notes: res.data.notes});
+                this.setState({ notes: res.data.notes });
                 console.log("state", this.state.notes);
+            })
+            .catch(err => {
+                console.log(err);
             });
-
     }
 
     render() {

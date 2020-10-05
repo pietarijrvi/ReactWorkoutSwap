@@ -35,3 +35,17 @@ code {
 .SearchBar{
   margin-left: 1em;
 }
+
+.AddWorkoutForm{
+  width: 50%;
+  margin: 1em 20em 1em;
+}
+
+#formWorkoutDuration, #formWorkoutUserId{
+  width: 20em;
+}
+
+.errorAlert, .successAlert{
+  width: 50%;
+  margin: 1em 20em 1em;
+}

@@ -5,9 +5,7 @@ import Accordion from 'react-bootstrap/Accordion'
 import Card from "react-bootstrap/Card";
 import Button from 'react-bootstrap/Button'
 
-//const apiUrl = 'http://localhost:3001/notes';
-const apiUrl = 'http://localhost:9000/api/json';
-const postUrl = 'http://localhost:9000/api/workouts';
+const apiWorkoutsUrl = 'http://localhost:9000/api/v1/workouts/';
 
 export default class Home extends React.Component {
     state = {
@@ -19,12 +17,14 @@ export default class Home extends React.Component {
 
 
     componentDidMount() {
-        axios.get(apiUrl)
+        axios.get(apiWorkoutsUrl)
             .then(res => {
                 console.log(res);
                 this.setState({notes: res.data.notes});
                 console.log("state", this.state.notes);
-            });
+            }).catch(err => {
+                console.log(err);
+        });
 
     }
 
@@ -40,13 +40,25 @@ export default class Home extends React.Component {
             id: this.state.noteId
         };
 
-        axios.post(postUrl, note)
+        axios.post(apiWorkoutsUrl, note)
             .then(res => {
                 console.log(res);
                 console.log(res.data);
 
-            });
-        window.location.reload();
+            }).catch(err => {
+            if (err.response) {
+                // client received an error response (5xx, 4xx)
+                console.log('post error with code', err.response);
+            } else if (err.request) {
+                // client never received a response, or request never left
+                console.log('communication error', err.request);
+            } else {
+                // anything else
+                console.log("Post error");
+            }
+
+        });
+        //window.location.reload();
         return false;
     };
 

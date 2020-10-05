@@ -1,21 +1,37 @@
 var express = require('express');
 var router = express.Router();
-const data = require('./testJson.json');
+const data = require('../testJson.json');
 const { check, validationResult } = require('express-validator');
 var SqlString = require('sqlstring');
-var con = require('../db.js');
+var con = require('../../db.js');
 
-router.get('/test', function(req, res, next) {
+router.get('/test', function(req, res) {
     res.send('node käytössä');
 });
 
-router.get('/json', function(req, res, next) {
-    //res.writeHead(200, {'Content-Type': 'application/json'});
-    //res.end(JSON.stringify(data));
+router.get('/', function(req, res) {
     res.json(data);
+
+    /*
+    const limit=50;
+
+    //WorkoutId, CreateDate, Title, Description, Duration, EquipmentRequired, Rating, CreatedBy
+    const sql = SqlString.format("SELECT *"
+        + " FROM Workouts"
+        + " ORDER BY Workouts.Rating"
+        + " LIMIT ?", [limit]);
+
+    con.get().query(sql, function (err, result) {
+        if (err) {
+            throw err;
+        }
+        console.log(result);
+        res.json(result);
+    });
+     */
 });
 
-router.post('/workouts/', [
+router.post('/', [
     // workoutID must be an int
     check('workoutID').isInt(),
     check('title').isLength({min:5, max:10}),
@@ -38,17 +54,14 @@ router.post('/workouts/', [
     res.send("Success - workout added (not really, just testing)");
 
     /*
-    res.header("Access-Control-Allow-Origin", "*");
     console.log("Receiving score - POST");
-    const rb = req.body;
-    const today = new Date();
-    const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-    const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    const dateTime = date+' '+time;
+    const dateTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    const createdBy = rb.createdBy;
+    const rating = 0;
 
-    const scoreSQL = SqlString.format("INSERT INTO game1 (game1.score, game1.user_id, game1.datetime) VALUES(?,?,?)",[rb.score, rb.userID, dateTime]);
+    const workoutSQL = SqlString.format("INSERT INTO game1 (Workouts.WorkoutId, Workouts.CreateDate, Workouts.Title, Workouts.Description, Workouts.Duration, Workouts.EquipmentRequired, Workouts.Rating, Workouts.CreatedBy) VALUES(?,?,?)",[rb.workoutId, dateTime, rb.title, rb.description, rb.duration, rb.equipmentRequired, rating, createdBy]);
 
-    con.get().query(scoreSQL, function (err, result) {
+    con.get().query(workoutSQL, function (err, result) {
         if (err) {
             throw err;
         }

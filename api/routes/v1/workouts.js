@@ -33,7 +33,6 @@ router.get('/', function(req, res) {
 
 router.post('/', [
     // workoutID must be an int
-    check('workoutID').isInt(),
     check('title').isLength({min:5, max:10}),
     check('description').isLength({min:5, max:10}),
     check('duration').isInt({min:1, max:180}),

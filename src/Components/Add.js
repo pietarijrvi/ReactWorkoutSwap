@@ -42,52 +42,65 @@ function SuccessAlert() {
             </Alert>
         );
     }
-        return <Button onClick={() => setShowSuccess(true)}>Show Alert</Button>;
+    return <Button onClick={() => setShowSuccess(true)}>Show Alert</Button>;
 
 }
 
 export default class Add extends React.Component {
     state = {
-        notes: [],
-        noteContent: '',
-        noteId: '',
+        id: '',
+        workouts: [],
+        title: "",
+        description: "",
+        duration: 0,
+        equipmentRequired: "",
+        rating: 0,
+        createdBy: 0,
         error: false,
         success: false
     };
 
 
     handleChange = event => {
-        this.setState({noteContent: event.target.value});
+        let value = event.target.value;
+        if (value === 'on') {
+            value = 1;
+        } else if (value === 'off') {
+            value = 0;
+        }
+        this.setState({[event.target.name]: value});
     };
 
     handleSubmit = event => {
         event.preventDefault();
-        console.log("noteIdPost", this.state.noteId);
         const note = {
-            content: this.state.noteContent,
-            id: this.state.noteId
+            id: this.state.id,
+            description: this.state.description,
+            title: this.state.title,
+            duration: this.state.duration,
+            equipmentRequired: this.state.equipmentRequired,
+            rating: this.state.rating,
+            createdBy: this.state.createdBy
         };
 
-        axios
-            .post(apiWorkoutsUrl, note)
+        axios.post(apiWorkoutsUrl, note)
             .then(res => {
                 console.log(res);
                 console.log(res.data);
-                this.setState({success: true});
-            })
-            .catch(err => {
-                this.setState({error: true});
-                if (err.response) {
-                    // client received an error response (5xx, 4xx)
-                    console.log("post error with code", err.response);
-                } else if (err.request) {
-                    // client never received a response, or request never left
-                    console.log("communication error", err.request);
-                } else {
-                    // anything else
-                    console.log("Post error");
-                }
-            });
+
+            }).catch(err => {
+            if (err.response) {
+                // client received an error response (5xx, 4xx)
+                console.log('post error with code', err.response);
+            } else if (err.request) {
+                // client never received a response, or request never left
+                console.log('communication error', err.request);
+            } else {
+                // anything else
+                console.log("Post error");
+            }
+
+        });
         return false;
     };
 
@@ -104,27 +117,30 @@ export default class Add extends React.Component {
                 <Form className="AddWorkoutForm" onSubmit={this.handleSubmit}>
                     <Form.Group controlId="formWorkoutName">
                         <Form.Label>Workout name</Form.Label>
-                        <Form.Control required type="text" placeholder="Name your workout"
+                        <Form.Control name="title" required type="text" placeholder="Name your workout"
                                       onChange={this.handleChange}/>
                     </Form.Group>
-
                     <Form.Group controlId="formWorkoutDescription">
                         <Form.Label>Description</Form.Label>
-                        <Form.Control required as="textarea" rows="4" placeholder="Explain your workout"
+                        <Form.Control name="description" required as="textarea" rows="4" placeholder="Explain your workout"
                                       onChange={this.handleChange}/>
                     </Form.Group>
                     <Form.Group controlId="formWorkoutDuration">
                         <Form.Label>Duration</Form.Label>
-                        <Form.Control required type="number" placeholder="Minutes to complete the workout"
+                        <Form.Control name="duration" required type="number"
+                                      placeholder="Minutes to complete the workout"
                                       onChange={this.handleChange}/>
                     </Form.Group>
                     <Form.Group controlId="formWorkoutUserId">
                         <Form.Label>UserID</Form.Label>
-                        <Form.Control required type="text" placeholder="Enter your UserID"
+                        <Form.Control name="createdBy" required type="text" placeholder="Enter your UserID"
                                       onChange={this.handleChange}/>
                     </Form.Group>
                     <Form.Group controlId="formEquipmentNeeded">
-                        <Form.Check required type="checkbox" label="Check this box if your workout requires equipment"/>
+                        <Form.Check name="equipmentRequired" required type="checkbox"
+                                    label="Check this box if your workout requires equipment"
+                                    onChange={this.handleChange}
+                        />
                     </Form.Group>
                     <Button variant="primary" type="submit">
                         Submit

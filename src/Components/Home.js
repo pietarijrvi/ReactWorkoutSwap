@@ -5,10 +5,6 @@ import Container from "react-bootstrap/Container";
 
 export default class Home extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     componentDidMount() {
         UserService.getPublicContent().then(
             response => {

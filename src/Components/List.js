@@ -18,7 +18,7 @@ export default class List extends React.Component {
 
     componentDidMount() {
         this.setState({filteredContacts: this.state.workouts});
-        axios.get(apiWorkoutsUrl)
+        axios.get(apiWorkoutsUrl, { params: { limit: 50} })
             .then(res => {
                 console.log(res);
                 this.setState({workouts: res.data});

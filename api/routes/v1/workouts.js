@@ -8,14 +8,17 @@ var con = require('../../db.js');
 router.get('/', function (req, res) {
 
     const limit = req.query.limit;
-    const name = req.query.name;
+    let name = "";
+    if(req.query.name)
+        name = req.query.name;
     const equipment = req.query.equipment;
 
     //WorkoutId, CreateDate, Title, Description, Duration, EquipmentRequired, Rating, CreatedBy
     const sql = SqlString.format("SELECT *"
         + " FROM workouts"
+        //+ " WHERE description LIKE '%?%'" //AND equipmentRequired = ?"
         + " ORDER BY workouts.rating"
-        + " LIMIT ?", [limit]);
+        + " LIMIT ?", [parseInt(limit)]);
 
     try {
         con.get().query(sql, function (err, result) {

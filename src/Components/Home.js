@@ -1,8 +1,27 @@
 import React from "react";
+
+import UserService from "../services/user.service";
 import Container from "react-bootstrap/Container";
 
 export default class Home extends React.Component {
 
+    componentDidMount() {
+        UserService.getPublicContent().then(
+            response => {
+                this.setState({
+                    content: response.data
+                });
+            },
+            error => {
+                this.setState({
+                    content:
+                        (error.response && error.response.data) ||
+                        error.message ||
+                        error.toString()
+                });
+            }
+        );
+    }
 
     render() {
         return (
@@ -21,7 +40,6 @@ export default class Home extends React.Component {
                     <h5>
                         Hae päiväyksen, otsikon tai välinetarpeen perusteella
                     </h5>
-
                 </Container>
             </div>
         )

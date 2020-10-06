@@ -85,6 +85,7 @@ export default class List extends React.Component {
                                         <Accordion.Toggle as={Button} variant="link" eventKey="0">
                                             {workout.title}
                                         </Accordion.Toggle>
+                                        <div className="divider"/>
                                         <Button id="FavoriteButton">Add to favorites</Button>
                                     </Card.Header>
                                     <Accordion.Collapse eventKey="0">

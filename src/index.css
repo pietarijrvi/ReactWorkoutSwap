@@ -75,6 +75,10 @@ code {
   display: inline-flex;
 }
 
+.divider{
+  flex-grow: 100;
+}
+
 div.col-auto{
   padding: 0;
   flex: 0 0 auto;

@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cookie-parser": "~1.4.5",
     "cors": "^2.8.5",
@@ -14,9 +15,12 @@
     "express-validator": "^6.6.1",
     "http-errors": "~1.8.0",
     "jade": "~1.11.0",
+    "jsonwebtoken": "^8.5.1",
     "mariadb": "^2.4.2",
     "morgan": "~1.10.0",
     "mysql": "^2.18.1",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.3.5",
     "sqlstring": "^2.3.2"
   }
 }

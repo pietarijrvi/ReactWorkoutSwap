@@ -5,12 +5,15 @@ const bodyParser = require("body-parser");
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
-
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var APIRouter = require('./routes/index');
 
 var app = express();
+
+// routes
+require('./routes/auth.routes')(app);
+require('./routes/user.routes')(app);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -45,5 +48,10 @@ app.use(function(err, req, res) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+const db = require("./models");
+const Role = db.role;
+
+db.sequelize.sync();
 
 module.exports = app;

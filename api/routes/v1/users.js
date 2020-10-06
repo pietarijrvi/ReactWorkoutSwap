@@ -7,7 +7,7 @@ var createError = require('http-errors');
 
 router.get('/:userId', function (req, res) {
 
-    const sql = SqlString.format("SELECT username"
+    const sql = SqlString.format("SELECT *"
         + " FROM users"
         + " WHERE id= ?", [req.params.userId]);
 

@@ -6,7 +6,10 @@ var con = require('../../db.js');
 
 
 router.get('/', function (req, res) {
-    const limit = 50;
+
+    const limit = req.query.limit;
+    const name = req.query.name;
+    const equipment = req.query.equipment;
 
     //WorkoutId, CreateDate, Title, Description, Duration, EquipmentRequired, Rating, CreatedBy
     const sql = SqlString.format("SELECT *"

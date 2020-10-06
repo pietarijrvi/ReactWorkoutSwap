@@ -95,32 +95,31 @@ export default class App extends React.Component {
                                     </NavItem>
                                 )}
                                 {currentUser ? (
-                                    <div>
                                         <NavItem>
                                             <Nav.Link as={Link} to="/profile">
                                                 {currentUser.username}
                                             </Nav.Link>
                                         </NavItem>
-                                        <NavItem>
-                                            <a href="/login" className="nav-link" onClick={this.logOut}>
-                                                LogOut
-                                            </a>
-                                        </NavItem>
-                                    </div>
                                 ) : (
-                                    <div>
                                         <NavItem>
                                             <Nav.Link as={Link} to="/login">
                                                 Login
                                             </Nav.Link>
                                         </NavItem>
+                                )}
+                                {currentUser ? (
 
+                                        <NavItem>
+                                            <a href="/login" className="nav-link" onClick={this.logOut}>
+                                                LogOut
+                                            </a>
+                                        </NavItem>
+                                ) : (
                                         <NavItem>
                                             <Nav.Link as={Link} to="/register">
                                                 Sign Up
                                             </Nav.Link>
                                         </NavItem>
-                                    </div>
                                 )}
                             </Nav>
                         </Navbar>

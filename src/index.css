@@ -6,7 +6,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   display: grid;
-  overflow: hidden;
 }
 
 *{
@@ -32,22 +31,40 @@ code {
 #HomeHeader{
   margin-bottom: 1em;
 }
+
 #HomepageContainer{
   margin-top: 5em;
   margin-left: 5em;
 }
 
-
-.AccordionList{
-  width: 75%;
-  margin-left: 1em;
+.AccordionList {
+  overflow: scroll;
+  margin-bottom: 5em;
+  padding: 1em;
+  background: #F2F2F2;
+  max-height: 60em;
+  margin-top: 2em;
+}
+.card{
+  border-radius: 0 !important;
 }
 
+.List{
+  width: 75%;
+  margin: auto;
+  height:auto;
+  max-height:150%;
+  overflow:auto;
+}
 
 .card-header{
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
+}
+.CheckboxColumn{
+  margin: auto;
+  padding-right: 1em;
 }
 
 #FavoriteButton{
@@ -56,9 +73,14 @@ code {
 
 .SearchBarForm{
   display: inline-flex;
-  align-items: center;
-  flex-direction: row;
-  margin-top: 2em;
+}
+
+div.col-auto{
+  padding: 0;
+  flex: 0 0 auto;
+  width: auto;
+  max-width: 100%;
+  margin-right: 1em;
 }
 
 .AddWorkoutForm{

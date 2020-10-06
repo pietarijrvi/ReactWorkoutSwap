@@ -1,18 +1,11 @@
 var express = require('express');
 var router = express.Router();
-const data = require('../testJson.json');
 const {check, validationResult} = require('express-validator');
 var SqlString = require('sqlstring');
 var con = require('../../db.js');
 
-router.get('/test', function (req, res) {
-    res.send('node käytössä');
-});
 
 router.get('/', function (req, res) {
-    //res.json(data);
-
-
     const limit = 50;
 
     //WorkoutId, CreateDate, Title, Description, Duration, EquipmentRequired, Rating, CreatedBy
@@ -21,13 +14,17 @@ router.get('/', function (req, res) {
         + " ORDER BY workouts.rating"
         + " LIMIT ?", [limit]);
 
-    con.get().query(sql, function (err, result) {
-        if (err) {
-            throw err;
-        }
-        console.log(result);
-        res.json(result);
-    });
+    try {
+        con.get().query(sql, function (err, result) {
+            if (err) {
+                throw err;
+            }
+            console.log(result);
+            res.json(result);
+        });
+    }catch(e){
+        console.error(e.message, e.name);
+    }
 
 });
 
@@ -49,11 +46,6 @@ router.post('/', [
         return res.status(422).json({errors: errors.array()});
     }
 
-    /*
-    console.log("post ok");
-    res.send("Success - workout added (not really, just testing)");
-    /*
-     */
     const rb = req.body;
 
     console.log("Receiving score - POST");
@@ -61,16 +53,21 @@ router.post('/', [
     const createdBy = rb.createdBy;
     const rating = 0;
 
-    const workoutSQL = SqlString.format("INSERT INTO workouts (workouts.createDate, workouts.title, workouts.description, workouts.duration, workouts.equipmentRequired, workouts.Rating, workouts.createdBy) VALUES(?,?,?,?,?,?,?)", [dateTime, rb.title, rb.description, rb.duration, rb.equipmentRequired, rating, createdBy]);
+    const workoutSQL = SqlString.format("INSERT INTO workouts (workouts.createDate, workouts.title, workouts.description, workouts.duration, workouts.equipmentRequired, workouts.Rating, workouts.createdBy) " +
+        "VALUES(?,?,?,?,?,?,?)", [dateTime, rb.title, rb.description, rb.duration, rb.equipmentRequired, rating, createdBy]);
 
-    con.get().query(workoutSQL, function (err, result) {
-        if (err) {
-            throw err;
-        }
-        console.log(result);
-        res.writeHead(200, {'Content-Type': 'application/json'});
-        res.end("Success - workout added");
-    });
+    try {
+        con.get().query(workoutSQL, function (err, result) {
+            if (err) {
+                throw err;
+            }
+            console.log(result);
+            res.writeHead(200, {'Content-Type': 'application/json'});
+            res.end("Success - workout added");
+        });
+    }catch(e){
+        console.error(e.message, e.name);
+    }
 });
 
 module.exports = router;

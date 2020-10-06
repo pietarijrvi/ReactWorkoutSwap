@@ -3,9 +3,9 @@ import axios from 'axios';
 import Accordion from 'react-bootstrap/Accordion'
 import Card from "react-bootstrap/Card";
 import Button from 'react-bootstrap/Button'
-import ButtonToolbar from "react-bootstrap/ButtonToolbar";
-import InputGroup from 'react-bootstrap/InputGroup'
-import FormControl from 'react-bootstrap/FormControl'
+import Form from 'react-bootstrap/Form'
+import Col from 'react-bootstrap/Col'
+import Dropdown from "react-bootstrap/Dropdown";
 
 const apiWorkoutsUrl = "http://localhost:9000/api/v1/workouts/";
 
@@ -17,7 +17,7 @@ export default class List extends React.Component {
     };
 
     componentDidMount() {
-        this.setState({ filteredContacts: this.state.workouts });
+        this.setState({filteredContacts: this.state.workouts});
         axios.get(apiWorkoutsUrl)
             .then(res => {
                 console.log(res);
@@ -40,21 +40,39 @@ export default class List extends React.Component {
         return (
             <div className="List">
                 <div className="SearchBar">
-                    <ButtonToolbar className="mb-3" aria-label="Toolbar with Button groups">
-                        <InputGroup>
-                            <InputGroup.Prepend>
-                                <InputGroup.Text id="btnGroupAddon">Search</InputGroup.Text>
-                            </InputGroup.Prepend>
-                            <FormControl
-                                type="text"
+                    <Form className="SearchBarForm">
+                        <Col xs="auto">
+                            <Form.Control
+                                className="mb-2"
+                                id="inlineFormInput"
                                 placeholder="Search by name"
-                                aria-label="Input group example"
-                                aria-describedby="btnGroupAddon"
-                                className="FilterByName"
-                                onChange={e => this.handleChange(e)}
                             />
-                        </InputGroup>
-                    </ButtonToolbar>
+                        </Col>
+                        <Col xs="auto">
+                            <Form.Check
+                                type="checkbox"
+                                id="autoSizingCheck"
+                                className="mb-2"
+                                label="Equipment required"
+                            />
+                        </Col>
+                        <Col xs="auto">
+                            <Dropdown className="DropdownFilter">
+                                <Dropdown.Toggle variant="primary" id="dropdown-basic">
+                                    Date created
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                    <Dropdown.Item>Newest first</Dropdown.Item>
+                                    <Dropdown.Item>Oldest first</Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        </Col>
+                        <Col xs="auto">
+                            <Button id="ListFilterButton" variant="success" type="submit" className="mb-2">
+                                Filter
+                            </Button>
+                        </Col>
+                    </Form>
                 </div>
                 <div className="AccordionList">
                     {this.state.workouts.map(workout => (
@@ -68,12 +86,12 @@ export default class List extends React.Component {
                                 </Card.Header>
                                 <Accordion.Collapse eventKey="0">
                                     <Card.Body>
-                                        {workout.description}
-                                        {workout.duration}
-                                        {workout.equipmentRequired}
-                                        {workout.rating}
-                                        {workout.createDate}
-                                        {workout.createdBy}
+                                        {workout.description}<br/><br/>
+                                        Workout duration: {workout.duration} minutes<br/>
+                                        Equipment required (1 = yes, 0 = no): {workout.equipmentRequired}<br/>
+                                        Workout rating: {workout.rating}<br/>
+                                        Workout created: {workout.createDate}<br/>
+                                        Creators UserID: {workout.createdBy}
                                     </Card.Body>
                                 </Accordion.Collapse>
                             </Card>

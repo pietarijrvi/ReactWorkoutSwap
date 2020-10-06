@@ -17,7 +17,7 @@ export default class App extends React.Component {
             <Router>
                 <div className="App">
                     <div className="Header">
-                        <Navbar bg="dark" variant="dark">
+                        <Navbar bg="transparent" variant="light">
                             <Navbar.Brand href="/home" as={Link} to="/home">
                                 WorkoutSwap
                             </Navbar.Brand>

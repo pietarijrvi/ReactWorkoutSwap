@@ -5,6 +5,16 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  display: grid;
+  overflow: hidden;
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
 }
 
 code {
@@ -12,9 +22,21 @@ code {
     monospace;
 }
 
-.Header{
-  margin-bottom: 2em;
+
+
+.dropdown-toggle{
+  white-space: nowrap;
+  margin-bottom: .5rem!important;
 }
+
+#HomeHeader{
+  margin-bottom: 1em;
+}
+#HomepageContainer{
+  margin-top: 5em;
+  margin-left: 5em;
+}
+
 
 .AccordionList{
   width: 75%;
@@ -32,8 +54,11 @@ code {
   justify-self: flex-end;
 }
 
-.SearchBar{
-  margin-left: 1em;
+.SearchBarForm{
+  display: inline-flex;
+  align-items: center;
+  flex-direction: row;
+  margin-top: 2em;
 }
 
 .AddWorkoutForm{
@@ -48,4 +73,22 @@ code {
 .errorAlert, .successAlert{
   width: 50%;
   margin: 1em 20em 1em;
+}
+
+
+html,body{
+  height: 100%;
+}
+
+button{
+  padding: 8px 16px;
+  font-size: 25px;
+  font-weight: 500;
+  border-radius: 4px;
+  border: none;
+  outline: none;
+  background: #e69100;
+  color: white;
+  letter-spacing: 1px;
+  cursor: pointer;
 }

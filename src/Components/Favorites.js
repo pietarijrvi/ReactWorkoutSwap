@@ -6,8 +6,10 @@ import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
 import Dropdown from "react-bootstrap/Dropdown";
+import authHeader from "../services/auth-header";
+import authService from '../services/auth.service';
 
-const apiWorkoutsUrl = "http://localhost:9000/api/v1/workouts/";
+const apiFavoritesUrl = "http://localhost:9000/api/v1/users/" + authService.getCurrentUser().id + "/favorites";
 
 
 export default class Favorites extends React.Component {
@@ -18,7 +20,7 @@ export default class Favorites extends React.Component {
 
     componentDidMount() {
         this.setState({ filteredContacts: this.state.workouts });
-        axios.get(apiWorkoutsUrl)
+        axios.get(apiFavoritesUrl, { headers: authHeader() })
             .then(res => {
                 console.log(res);
                 this.setState({workouts: res.data});

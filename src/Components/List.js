@@ -6,8 +6,11 @@ import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
 import Dropdown from "react-bootstrap/Dropdown";
+import authService from "../services/auth.service";
+import authHeader from "../services/auth-header";
 
 const apiWorkoutsUrl = "http://localhost:9000/api/v1/workouts/";
+const addFavoritesUrl = "http://localhost:9000/api/v1/users/?/favorites";
 
 
 export default class List extends React.Component {
@@ -33,6 +36,28 @@ export default class List extends React.Component {
         this.setState({description: event.target.value});
         this.setState({workoutSelected: event.target.value});
     };
+
+    addToFavorites(workoutId) {
+        const favoritesUrl = addFavoritesUrl.replace("?", authService.getCurrentUser().id);
+        axios.post(favoritesUrl, {workoutId: workoutId}, { headers: authHeader() })
+            .then(res => {
+                this.setState({success: true});
+            }).catch(err => {
+            this.setState({error: true});
+            if (err.response) {
+                this.setState({errorMessage: err.response});
+                // client received an error response (5xx, 4xx)
+                console.log('post error with code', err.response);
+            } else if (err.request) {
+                this.setState({errorMessage: err.request});
+                // client never received a response, or request never left
+                console.log('communication error', err.request);
+            } else {
+                this.setState({errorMessage: 'Oops! Try again'});
+                console.log("Post error");
+            }
+        });
+    }
 
     render() {
 
@@ -86,7 +111,7 @@ export default class List extends React.Component {
                                             {workout.title}
                                         </Accordion.Toggle>
                                         <div className="divider"/>
-                                        <Button id="FavoriteButton">Add to favorites</Button>
+                                        <Button onClick={() => this.addToFavorites(workout.id)} id="FavoriteButton">Add to favorites</Button>
                                     </Card.Header>
                                     <Accordion.Collapse eventKey="0">
                                         <Card.Body>

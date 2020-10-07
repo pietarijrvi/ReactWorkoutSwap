@@ -9,7 +9,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import authHeader from "../services/auth-header";
 import authService from '../services/auth.service';
 
-const favoritesUrl = "http://localhost:9000/api/v1/users/" + authService.getCurrentUser().id + "/favorites";
+let favoritesUrl;
 
 
 export default class Favorites extends React.Component {
@@ -19,6 +19,7 @@ export default class Favorites extends React.Component {
     };
 
     componentDidMount() {
+        favoritesUrl = "http://localhost:9000/api/v1/users/" + authService.getCurrentUser().id + "/favorites";
         this.setState({ filteredContacts: this.state.workouts });
         axios.get(favoritesUrl, { headers: authHeader() })
             .then(res => {

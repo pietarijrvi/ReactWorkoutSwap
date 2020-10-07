@@ -8,6 +8,7 @@ import Col from 'react-bootstrap/Col'
 import Dropdown from "react-bootstrap/Dropdown";
 import authService from "../services/auth.service";
 import authHeader from "../services/auth-header";
+import Alert from 'react-bootstrap/Alert'
 
 const apiWorkoutsUrl = "http://localhost:9000/api/v1/workouts/";
 const addFavoritesUrl = "http://localhost:9000/api/v1/users/?/favorites";
@@ -18,6 +19,7 @@ export default class List extends React.Component {
     state = {
         workouts: [],
         searchText: ""
+        favorite: false
     };
 
 
@@ -40,13 +42,31 @@ export default class List extends React.Component {
         this.setState({searchText: event.target.value});
     };
 
+    onShowAddedFavorite = () => {
+        this.setState({favorite: true}, () => {
+            window.setTimeout(() => {
+                this.setState({favorite: false})
+            }, 3000)
+        });
+    };
+
+    onShowError = () => {
+        this.setState({error: true}, () => {
+            window.setTimeout(() => {
+                this.setState({error: false})
+            }, 3000)
+        });
+    };
+
     addToFavorites(workoutId) {
         const favoritesUrl = addFavoritesUrl.replace("?", authService.getCurrentUser().id);
         axios.post(favoritesUrl, {workoutId: workoutId}, { headers: authHeader() })
             .then(res => {
                 this.setState({success: true});
+                this.onShowAddedFavorite()
             }).catch(err => {
             this.setState({error: true});
+            this.onShowError();
             if (err.response) {
                 this.setState({errorMessage: err.response});
                 // client received an error response (5xx, 4xx)
@@ -79,7 +99,12 @@ export default class List extends React.Component {
 
         return (
             <div className="List">
-
+                {this.state.error && <Alert className="FavoriteErrorAlert" variant="danger" isopen="true">
+                    Error adding to favorites!
+                </Alert>}
+                {this.state.favorite && <Alert className="FavoriteSuccessAlert" variant="success" isopen="true">
+                    Added to favorites!
+                </Alert>}
                 <div className="AccordionList">
                     <div className="SearchBar">
                         <Form className="SearchBarForm">
@@ -118,7 +143,6 @@ export default class List extends React.Component {
                         </Form>
                     </div>
                     <div className="Scrollbar">
-
                         {this.state.workouts.map(workout => (
                             <Accordion defaultActiveKey="1">
                                 <Card>

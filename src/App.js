@@ -58,21 +58,27 @@ export default class App extends React.Component {
                                 WorkoutSwap
                             </Navbar.Brand>
                             <Nav className="mr-auto">
+                                {currentUser &&(
                                 <NavItem>
                                     <Nav.Link as={Link} to="/list">
                                         List
                                     </Nav.Link>
                                 </NavItem>
+                                )}
+                                {currentUser &&(
                                 <NavItem>
                                     <Nav.Link as={Link} to="/add">
                                         Add
                                     </Nav.Link>
                                 </NavItem>
+                                )}
+                                {currentUser &&(
                                 <NavItem>
                                     <Nav.Link as={Link} to="/favorites">
                                         Favorites
                                     </Nav.Link>
                                 </NavItem>
+                                )}
                                 {showModeratorBoard && (
                                     <NavItem>
                                         <Nav.Link as={Link} to="/mod">
@@ -87,17 +93,10 @@ export default class App extends React.Component {
                                         </Nav.Link>
                                     </NavItem>
                                 )}
-                                {currentUser && (
-                                    <NavItem>
-                                        <Nav.Link as={Link} to="/user">
-                                            User
-                                        </Nav.Link>
-                                    </NavItem>
-                                )}
                                 {currentUser ? (
                                         <NavItem>
                                             <Nav.Link as={Link} to="/profile">
-                                                {currentUser.username}
+                                                Profile
                                             </Nav.Link>
                                         </NavItem>
                                 ) : (
@@ -126,16 +125,16 @@ export default class App extends React.Component {
                     </div>
                     <div className="Main">
                         <Switch>
-                            <Route path="/home">
+                            <Route exact path={["/home", "/"]}>
                                 <Home/>
                             </Route>
-                            <Route path="/list">
+                            <Route exact path="/list">
                                 <List/>
                             </Route>
-                            <Route path="/add">
+                            <Route exact path="/add">
                                 <Add/>
                             </Route>
-                            <Route path="/favorites">
+                            <Route exact path="/favorites">
                                 <Favorites/>
                             </Route>
                         </Switch>

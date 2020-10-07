@@ -26,7 +26,7 @@ export default class Add extends React.Component {
         this.setState({error: true}, () => {
             window.setTimeout(() => {
                 this.setState({error: false})
-            }, 2000)
+            }, 3000)
         });
     };
 
@@ -34,7 +34,7 @@ export default class Add extends React.Component {
         this.setState({success: true}, () => {
             window.setTimeout(() => {
                 this.setState({success: false})
-            }, 2000)
+            }, 3000)
         });
     };
 
@@ -82,10 +82,10 @@ export default class Add extends React.Component {
     render() {
         return (
             <div className="Add">
-                {this.state.error && <Alert variant="danger" isopen="true">
+                {this.state.error && <Alert className="PostErrorAlert" variant="danger" isopen="true">
                     Error!
                 </Alert>}
-                {this.state.success && <Alert variant="success" isopen="true">
+                {this.state.success && <Alert className="PostSuccessAlert" variant="success" isopen="true">
                     Success!
                 </Alert>}
 

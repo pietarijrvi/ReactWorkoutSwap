@@ -3,7 +3,7 @@ var router = express.Router();
 const {check, validationResult} = require('express-validator');
 var SqlString = require('sqlstring');
 var con = require('../../db.js');
-var createError = require('http-errors');
+var connect = require('../../dbConnection.js');
 
 router.get('/:userId', function (req, res) {
 
@@ -11,17 +11,7 @@ router.get('/:userId', function (req, res) {
         + " FROM users"
         + " WHERE id= ?", [req.params.userId]);
 
-    try {
-        con.get().query(sql, function (err, result) {
-            if (err) {
-                throw err;
-            }
-            console.log(result);
-            res.json(result);
-        });
-    }catch(e){
-        console.error(e.message, e.name);
-    }
+    connect(res, sql);
 
 });
 
@@ -31,36 +21,27 @@ router.get('/:userId/favorites', function (req, res) {
         + " FROM workouts, favorites"
         + " WHERE favorites.userId = ? AND workouts.id=favorites.workoutId", [req.params.userId]);
 
-    try {
-        con.get().query(sql, function (err, result) {
-            if (err) {
-                throw err;
-            }
-            res.json(result);
-        });
-    }catch(e){
-        console.error(e.message, e.name);
-    }
+    connect(res, sql);
 
 });
 
-router.post('/:userId/favorites', function (req, res) {
+router.post('/:userId/favorites', [
+        check('userId').isInt(),
+        check('workoutId').isInt()
+    ],
+    function (req, res) {
+        // Finds the validation errors in this request
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            console.log("post err");
+            return res.status(422).json({errors: errors.array()});
+        }
 
-    const rb = req.body;
-    const sql = SqlString.format("INSERT INTO favorites (userId,workoutId)"+
-    "VALUES(?,?)", [req.params.userId, rb.workoutId]);
+        const rb = req.body;
+        const sql = SqlString.format("INSERT INTO favorites (userId,workoutId)" +
+            "VALUES(?,?)", [req.params.userId, rb.workoutId]);
 
-    try {
-        con.get().query(sql, function (err, result) {
-            if (err) {
-                throw err;
-            }
-            res.json(result);
-        });
-    }catch(e){
-        res.status(500).body("failed to get ... " + e).send({ error: e, message: e.message }); // 500
-    }
-
-});
+        connect(res, sql);
+    });
 
 module.exports = router;

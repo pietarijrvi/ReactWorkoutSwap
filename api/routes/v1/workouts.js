@@ -36,7 +36,7 @@ router.get('/', function (req, res) {
 router.get('/:userId', function (req, res) {
     const sql = SqlString.format("SELECT *"
         + " FROM workouts"
-        + " WHERE id= ?", [req.params.userId]);
+        + " WHERE createdBy= ?", [req.params.userId]);
     connect(res, sql);
 });
 

@@ -10,16 +10,24 @@ router.get('/', function (req, res) {
 
     const limit = req.query.limit;
     let name = "";
-    if (req.query.name)
-        name = req.query.name;
+    if (req.query.title)
+        name = req.query.title;
     const equipment = req.query.equipment;
 
     //WorkoutId, CreateDate, Title, Description, Duration, EquipmentRequired, Rating, CreatedBy
-    const sql = SqlString.format("SELECT *"
-        + " FROM workouts"
-        //+ " WHERE description LIKE '%?%'" //AND equipmentRequired = ?"
-        + " ORDER BY workouts.rating"
-        + " LIMIT ?", [parseInt(limit)]);
+    let sql;
+    if (req.query.title&&req.query.title!==""){
+        sql = SqlString.format("SELECT *"
+            + " FROM workouts"
+            + " WHERE title LIKE ?" //AND equipmentRequired = ?"
+            + " ORDER BY workouts.rating"
+            + " LIMIT ?", ['%'+req.query.title+'%',parseInt(limit)]);
+    }else{
+        sql = SqlString.format("SELECT *"
+            + " FROM workouts"
+            + " ORDER BY workouts.rating"
+            + " LIMIT ?", [parseInt(limit)]);
+    }
 
     connect(res, sql);
 

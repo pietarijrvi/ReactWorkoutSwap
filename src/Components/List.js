@@ -17,7 +17,9 @@ export default class List extends React.Component {
 
     state = {
         workouts: [],
+        searchText: ""
     };
+
 
     componentDidMount() {
         this.setState({filteredContacts: this.state.workouts});
@@ -33,8 +35,9 @@ export default class List extends React.Component {
     }
 
     handleChange = event => {
-        this.setState({description: event.target.value});
-        this.setState({workoutSelected: event.target.value});
+        //this.setState({description: event.target.value});
+        //this.setState({workoutSelected: event.target.value});
+        this.setState({searchText: event.target.value});
     };
 
     addToFavorites(workoutId) {
@@ -59,6 +62,18 @@ export default class List extends React.Component {
         });
     }
 
+    searchClick(){
+        const searchText = this.state.searchText;
+        axios.get(apiWorkoutsUrl, { params: { limit: 50, title:searchText} })
+            .then(res => {
+                console.log(res);
+                this.setState({workouts: res.data});
+                console.log("state", this.state.workouts);
+            }).catch(err => {
+            console.log(err);
+        });
+    }
+
     render() {
 
 
@@ -73,6 +88,7 @@ export default class List extends React.Component {
                                     className="mb-2"
                                     id="inlineFormInput"
                                     placeholder="Search by name"
+                                    onChange={this.handleChange}
                                 />
                             </Col>
                             <Col className="CheckboxColumn" xs="auto">
@@ -95,8 +111,8 @@ export default class List extends React.Component {
                                 </Dropdown>
                             </Col>
                             <Col xs="auto">
-                                <Button id="ListFilterButton" variant="success" type="submit" className="mb-2">
-                                    Filter
+                                <Button onClick={() =>this.searchClick()} id="ListFilterButton" variant="success" className="mb-2">
+                                    Search
                                 </Button>
                             </Col>
                         </Form>

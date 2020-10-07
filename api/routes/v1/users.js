@@ -1,11 +1,12 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const { authJwt } = require("../../middleware");
 const {check, validationResult} = require('express-validator');
-var SqlString = require('sqlstring');
-var con = require('../../db.js');
-var connect = require('../../dbConnection.js');
+const SqlString = require('sqlstring');
+const connect = require('../../dbConnection.js');
 
-router.get('/:userId', function (req, res) {
+
+router.get('/:userId/profile',[authJwt.verifyToken],function (req, res) {
 
     const sql = SqlString.format("SELECT *"
         + " FROM users"
@@ -15,7 +16,7 @@ router.get('/:userId', function (req, res) {
 
 });
 
-router.get('/:userId/favorites', function (req, res) {
+router.get('/:userId/favorites',[authJwt.verifyToken], function (req, res) {
 
     const sql = SqlString.format("SELECT *"
         + " FROM workouts, favorites"
@@ -25,7 +26,7 @@ router.get('/:userId/favorites', function (req, res) {
 
 });
 
-router.post('/:userId/favorites', [
+router.post('/:userId/favorites', [authJwt.verifyToken],[
         check('userId').isInt(),
         check('workoutId').isInt()
     ],

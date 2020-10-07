@@ -1,8 +1,9 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const { authJwt } = require("../../middleware");
 const {check, validationResult} = require('express-validator');
-var SqlString = require('sqlstring');
-var connect = require('../../dbConnection.js');
+const SqlString = require('sqlstring');
+const connect = require('../../dbConnection.js');
 
 
 router.get('/', function (req, res) {
@@ -31,7 +32,7 @@ router.get('/:userId', function (req, res) {
     connect(res, sql);
 });
 
-router.post('/', [
+router.post('/', [authJwt.verifyToken],[
     check('title')
         .isString().withMessage('Only letters and digits allowed in title.')
         .trim()
@@ -62,7 +63,7 @@ router.post('/', [
     const createdBy = rb.createdBy;
     const rating = 0;
 
-    const workoutSQL = SqlString.format("INSERT INTO workouts (workouts.createDate, workouts.title, workouts.description, workouts.duration, workouts.equipmentRequired, workouts.Rating, workouts.createdBy) " +
+    const sql = SqlString.format("INSERT INTO workouts (workouts.createDate, workouts.title, workouts.description, workouts.duration, workouts.equipmentRequired, workouts.Rating, workouts.createdBy) " +
         "VALUES(?,?,?,?,?,?,?)", [dateTime, rb.title, rb.description, rb.duration, rb.equipmentRequired, rating, createdBy]);
 
     connect(res, sql);

@@ -3,6 +3,8 @@ import axios from 'axios';
 import Form from 'react-bootstrap/Form'
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
+import authHeader from '../services/auth-header';
+import authService from '../services/auth.service';
 
 const apiWorkoutsUrl = "http://localhost:9000/api/v1/workouts/";
 
@@ -46,19 +48,15 @@ export default class Add extends React.Component {
     handleSubmit = event => {
         event.preventDefault();
         const note = {
-            id: this.state.id,
             description: this.state.description,
             title: this.state.title,
             duration: this.state.duration,
             equipmentRequired: this.state.equipmentRequired,
-            rating: this.state.rating,
-            createdBy: this.state.createdBy,
+            createdBy: authService.getCurrentUser().id
         };
 
-        axios.post(apiWorkoutsUrl, note)
+        axios.post(apiWorkoutsUrl, note, { headers: authHeader() })
             .then(res => {
-                console.log(res);
-                console.log(res.data);
                 this.setState({success: true});
                 this.onShowSuccess()
             }).catch(err => {

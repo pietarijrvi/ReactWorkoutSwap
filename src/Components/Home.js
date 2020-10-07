@@ -2,10 +2,27 @@ import React from "react";
 
 import UserService from "../services/user.service";
 import Container from "react-bootstrap/Container";
+import Button from "react-bootstrap/Button";
+import AuthService from "../services/auth.service";
 
 export default class Home extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            currentUser: undefined,
+        };
+    }
 
     componentDidMount() {
+        const user = AuthService.getCurrentUser();
+
+        if (user) {
+            this.setState({
+                currentUser: user,
+            });
+        }
+
         UserService.getPublicContent().then(
             response => {
                 this.setState({
@@ -24,6 +41,7 @@ export default class Home extends React.Component {
     }
 
     render() {
+        const {currentUser} = this.state;
         return (
             <div className="Home">
                 <Container id="HomepageContainer">
@@ -40,6 +58,12 @@ export default class Home extends React.Component {
                     <h5>
                         Hae päiväyksen, otsikon tai välinetarpeen perusteella
                     </h5>
+                    <br/>
+                    {!currentUser &&(
+                        <div>
+                    <Button id="LoginButton" href="/login">Login</Button> <Button id="RegisterButton" href="/register">Sign up</Button>
+                        </div>
+                        )}
                 </Container>
             </div>
         )

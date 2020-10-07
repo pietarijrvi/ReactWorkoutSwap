@@ -18,7 +18,7 @@ export default class List extends React.Component {
 
     state = {
         workouts: [],
-        searchText: ""
+        searchText: "",
         favorite: false
     };
 

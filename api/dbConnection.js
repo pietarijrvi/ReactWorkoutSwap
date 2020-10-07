@@ -8,5 +8,4 @@ module.exports = function connect(res, sql) {
         }
         res.json(result);
     });
-    con.get().end();
 };

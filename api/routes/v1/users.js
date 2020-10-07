@@ -40,9 +40,33 @@ router.post('/:userId/favorites', [authJwt.verifyToken],[
 
         const rb = req.body;
         const sql = SqlString.format("INSERT INTO favorites (userId,workoutId)" +
-            "VALUES(?,?)", [req.params.userId, rb.workoutId]);
+            " VALUES(?,?)", [req.params.userId, rb.workoutId]);
 
         connect(res, sql);
+    });
+
+router.delete('/:userId/favorites/:workoutId', [authJwt.verifyToken],[
+        check('userId').isInt(),
+        check('workoutId').isInt()
+    ],
+    function (req, res) {
+    try {
+
+        // Finds the validation errors in this request
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            console.log("post err");
+            return res.status(422).json({errors: errors.array()});
+        }
+
+        const rb = req.body;
+        console.log(req);
+        const sql = SqlString.format("DELETE FROM favorites WHERE userId=? AND workoutId=?",
+            [req.params.userId, req.params.workoutId]);
+        connect(res, sql);
+    }catch(e){
+        console.log(e);
+    }
     });
 
 module.exports = router;

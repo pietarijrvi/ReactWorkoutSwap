@@ -9,7 +9,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import authHeader from "../services/auth-header";
 import authService from '../services/auth.service';
 
-const apiFavoritesUrl = "http://localhost:9000/api/v1/users/" + authService.getCurrentUser().id + "/favorites";
+const favoritesUrl = "http://localhost:9000/api/v1/users/" + authService.getCurrentUser().id + "/favorites";
 
 
 export default class Favorites extends React.Component {
@@ -20,7 +20,7 @@ export default class Favorites extends React.Component {
 
     componentDidMount() {
         this.setState({ filteredContacts: this.state.workouts });
-        axios.get(apiFavoritesUrl, { headers: authHeader() })
+        axios.get(favoritesUrl, { headers: authHeader() })
             .then(res => {
                 console.log(res);
                 this.setState({workouts: res.data});
@@ -35,6 +35,35 @@ export default class Favorites extends React.Component {
         this.setState({description: event.target.value});
         this.setState({workoutSelected: event.target.value});
     };
+
+    removeWorkout(workoutToRemove) {
+        this.setState(prevState => {
+            const workouts = prevState.workouts.filter(workout => workout.id !== workoutToRemove);
+            return { workouts };
+        });
+    };
+
+    removeFromFavorites(workoutId) {
+        axios.delete(favoritesUrl+"/"+workoutId, {headers: authHeader()} )
+            .then(res => {
+                this.setState({success: true});
+                this.removeWorkout(workoutId);
+            }).catch(err => {
+            this.setState({error: true});
+            if (err.response) {
+                this.setState({errorMessage: err.response});
+                // client received an error response (5xx, 4xx)
+                console.log('post error with code', err.response);
+            } else if (err.request) {
+                this.setState({errorMessage: err.request});
+                // client never received a response, or request never left
+                console.log('communication error', err.request);
+            } else {
+                this.setState({errorMessage: 'Oops! Try again'});
+                console.log("Post error");
+            }
+        });
+    }
 
         render() {
 
@@ -84,7 +113,7 @@ export default class Favorites extends React.Component {
                                         <Accordion.Toggle as={Button} variant="link" eventKey="0">
                                             {workout.id}. {workout.title}
                                         </Accordion.Toggle>
-                                        <Button id="FavoriteButton">Add to favorites</Button>
+                                        <Button onClick={() => this.removeFromFavorites(workout.id)} id="FavoriteButton">Remove from favorites</Button>
                                     </Card.Header>
                                     <Accordion.Collapse eventKey="0">
                                         <Card.Body>

@@ -33,6 +33,7 @@ export default class List extends React.Component {
     state = {
         workouts: [],
         searchText: "",
+        equipmentRequired: "",
         favorite: false
     };
 
@@ -55,7 +56,10 @@ export default class List extends React.Component {
     }
 
     handleChange = event => {
-        this.setState({searchText: event.target.value});
+        const target = event.target;
+        const name = target.name;
+        const value = event.target.type === "checkbox" ? event.target.checked : event.target.value;
+        this.setState({[name]: value});
     };
 
     /**
@@ -113,7 +117,9 @@ export default class List extends React.Component {
      */
     searchClick(){
         const searchText = this.state.searchText;
-        axios.get(apiWorkoutsUrl, { params: { limit: 50, title:searchText} })
+        const equipment = this.state.equipmentRequired ? 1 : 0;
+        const limit = 50;
+        axios.get(apiWorkoutsUrl, { params: { limit: limit, title:searchText, equipment: equipment} })
             .then(res => {
                 console.log(res);
                 this.setState({workouts: res.data});
@@ -143,6 +149,7 @@ export default class List extends React.Component {
                         <Form className="SearchBarForm">
                             <Col xs="auto">
                                 <Form.Control
+                                    name="searchText"
                                     className="mb-2"
                                     id="inlineFormInput"
                                     placeholder="Search by name"
@@ -151,10 +158,12 @@ export default class List extends React.Component {
                             </Col>
                             <Col className="CheckboxColumn" xs="auto">
                                 <Form.Check
+                                    name="equipmentRequired"
                                     type="checkbox"
                                     id="autoSizingCheck"
                                     className="mb-2"
                                     label="Equipment required"
+                                    onChange={this.handleChange}
                                 />
                             </Col>
                             <Col xs="auto">

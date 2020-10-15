@@ -50,10 +50,12 @@ router.get('/', function (req, res) {
     } else {
         sql = SqlString.format("SELECT *"
             + " FROM workouts"
-            + " ORDER BY workouts.rating"
             + " WHERE equipmentRequired = ?"
+            + " ORDER BY workouts.rating"
             + " LIMIT ?", [equipment, parseInt(limit)]);
+
     }
+    console.log(sql);
 
     connect(res, sql);
 

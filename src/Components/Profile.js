@@ -3,6 +3,7 @@ import AuthService from "../services/auth.service";
 
 /**
  * Component for the user's profile page containing the user's username, accesstoken, id, email and roles
+ * @component
  * @extends Component
  */
 export default class Profile extends Component {

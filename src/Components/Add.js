@@ -14,6 +14,7 @@ const apiWorkoutsUrl = "http://localhost:9000/api/v1/workouts/";
 
 /**
  * Component for adding workouts to database
+ * @component
  * @extends React.Component
  */
 export default class Add extends React.Component {

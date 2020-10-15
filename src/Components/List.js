@@ -26,6 +26,7 @@ const addFavoritesUrl = "http://localhost:9000/api/v1/users/?/favorites";
  * Component for listing workouts from API. The user can click the workouts to open more information about them.
  * They can also add a workout in their favorites which saves the workout in another list containing only
  * the user's favorites.
+ * @component
  * @extends React.Component
  */
 export default class List extends React.Component {

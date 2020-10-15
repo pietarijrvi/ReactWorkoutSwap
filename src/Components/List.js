@@ -33,7 +33,7 @@ export default class List extends React.Component {
     state = {
         workouts: [],
         searchText: "",
-        equipmentRequired: "",
+        equipmentRequired: false,
         favorite: false
     };
 
@@ -44,15 +44,7 @@ export default class List extends React.Component {
      */
     componentDidMount() {
         this.setState({filteredContacts: this.state.workouts});
-        axios.get(apiWorkoutsUrl, { params: { limit: 50} })
-            .then(res => {
-                console.log(res);
-                this.setState({workouts: res.data});
-                console.log("state", this.state.workouts);
-            }).catch(err => {
-            console.log(err);
-        });
-
+        this.searchWorkouts();
     }
 
     handleChange = event => {
@@ -115,7 +107,7 @@ export default class List extends React.Component {
     /**
      * Method for filtering the workout list
      */
-    searchClick(){
+    searchWorkouts(){
         const searchText = this.state.searchText;
         const equipment = this.state.equipmentRequired ? 1 : 0;
         const limit = 50;
@@ -178,7 +170,7 @@ export default class List extends React.Component {
                                 </Dropdown>
                             </Col>
                             <Col xs="auto">
-                                <Button onClick={() =>this.searchClick()} id="ListFilterButton" variant="success" className="mb-2">
+                                <Button onClick={() =>this.searchWorkouts()} id="ListFilterButton" variant="success" className="mb-2">
                                     Search
                                 </Button>
                             </Col>

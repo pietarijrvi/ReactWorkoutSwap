@@ -19,14 +19,15 @@ router.get('/', function (req, res) {
     if (req.query.title&&req.query.title!==""){
         sql = SqlString.format("SELECT *"
             + " FROM workouts"
-            + " WHERE title LIKE ?" //AND equipmentRequired = ?"
+            + " WHERE title LIKE ? AND equipmentRequired = ?"
             + " ORDER BY workouts.rating"
-            + " LIMIT ?", ['%'+req.query.title+'%',parseInt(limit)]);
+            + " LIMIT ?", ['%'+req.query.title+'%', equipment, parseInt(limit)]);
     }else{
         sql = SqlString.format("SELECT *"
             + " FROM workouts"
             + " ORDER BY workouts.rating"
-            + " LIMIT ?", [parseInt(limit)]);
+            + " WHERE equipmentRequired = ?"
+            + " LIMIT ?", [equipment, parseInt(limit)]);
     }
 
     connect(res, sql);

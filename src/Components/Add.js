@@ -6,8 +6,16 @@ import Alert from "react-bootstrap/Alert";
 import authHeader from '../services/auth-header';
 import authService from '../services/auth.service';
 
+/**
+ * API call URL for the user's workouts
+ * @type {string}
+ */
 const apiWorkoutsUrl = "http://localhost:9000/api/v1/workouts/";
 
+/**
+ * Component for adding workouts to database
+ * @extends React.Component
+ */
 export default class Add extends React.Component {
     state = {
         id: '',
@@ -22,6 +30,9 @@ export default class Add extends React.Component {
         success: false,
     };
 
+    /**
+     * Method for error alert when posting
+     */
     onShowError = () => {
         this.setState({error: true}, () => {
             window.setTimeout(() => {
@@ -30,6 +41,9 @@ export default class Add extends React.Component {
         });
     };
 
+    /**
+     * Method for success alert when posting
+     */
     onShowSuccess = () => {
         this.setState({success: true}, () => {
             window.setTimeout(() => {
@@ -38,6 +52,10 @@ export default class Add extends React.Component {
         });
     };
 
+    /**
+     * Used to set a new state for the inputs
+     * @param event
+     */
     handleChange = event => {
         const target = event.target;
         const name = target.name;
@@ -45,6 +63,11 @@ export default class Add extends React.Component {
         this.setState({[name]: value});
     };
 
+    /**
+     * Called when form has been submitted. Attempts to post the new workout to the database.
+     * @param event
+     * @returns {boolean}
+     */
     handleSubmit = event => {
         event.preventDefault();
         const note = {
@@ -55,7 +78,7 @@ export default class Add extends React.Component {
             createdBy: authService.getCurrentUser().id
         };
 
-        axios.post(apiWorkoutsUrl, note, { headers: authHeader() })
+        axios.post(apiWorkoutsUrl, note, {headers: authHeader()})
             .then(res => {
                 this.setState({success: true});
                 this.onShowSuccess()
@@ -79,6 +102,10 @@ export default class Add extends React.Component {
         return false;
     };
 
+    /**
+     * Render function for the workout adding form
+     * @returns div with workout adding form
+     */
     render() {
         return (
             <div className="Add">

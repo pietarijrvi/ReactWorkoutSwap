@@ -5,6 +5,11 @@ import CheckButton from "react-validation/build/button";
 
 import AuthService from "../services/auth.service";
 
+/**
+ * Returns an error alert if a field in the login form hasn't been filled
+ * @param value - value input by user
+ * @returns alert div
+ */
 const required = value => {
     if (!value) {
         return (
@@ -15,6 +20,10 @@ const required = value => {
     }
 };
 
+/**
+ * Component for logging in
+ * @extends Component
+ */
 export default class Login extends Component {
     constructor(props) {
         super(props);
@@ -30,18 +39,30 @@ export default class Login extends Component {
         };
     }
 
+    /**
+     * Method for setting email field value to state
+     * @param e - email input by user
+     */
     onChangeEmail(e) {
         this.setState({
             email: e.target.value
         });
     }
 
+    /**
+     * Method for setting password field value to state
+     * @param e - password input by user
+     */
     onChangePassword(e) {
         this.setState({
             password: e.target.value
         });
     }
 
+    /**
+     * Method for logging in using JWT authentication
+     * @param e
+     */
     handleLogin(e) {
         e.preventDefault();
 
@@ -79,6 +100,10 @@ export default class Login extends Component {
         }
     }
 
+    /**
+     * Render function for the login component
+     * @returns the login form
+     */
     render() {
         return (
             <div className="col-md-12 LoginCard">

@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import AuthService from "../services/auth.service";
 
+/**
+ * Component for the user's profile page containing the user's username, accesstoken, id, email and roles
+ * @extends Component
+ */
 export default class Profile extends Component {
     constructor(props) {
         super(props);
@@ -10,6 +14,10 @@ export default class Profile extends Component {
         };
     }
 
+    /**
+     * Render function for the profile component
+     * @returns the profile
+     */
     render() {
         const { currentUser } = this.state;
 

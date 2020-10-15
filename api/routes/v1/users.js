@@ -9,6 +9,7 @@ const connect = require('../../dbConnection.js');
 /**
  * @api {get} v1/users/:userId/profile Request user's profile information
  * @apiGroup Users
+ * @apiVersion 1.0.0
  *
  * @apiParam {Number} userId userId
  * @apiParam {JSON} JWToken users can access just their own information
@@ -32,6 +33,7 @@ router.get('/:userId/profile', [authJwt.verifyToken], function (req, res) {
 /**
  * @api {get} v1/users/:userId/favorites Request list of user's favorite workouts
  * @apiGroup Users
+ * @apiVersion 1.0.0
  *
  * @apiParam {Number} userId userId
  * @apiParam {JSON} JWToken users can access just their own information
@@ -71,6 +73,7 @@ router.get('/:userId/favorites', [authJwt.verifyToken], function (req, res) {
 /**
  * @api {post} v1/users/:userId/favorites/:workoutId Add workout to user's favorites
  * @apiGroup Users
+ * @apiVersion 1.0.0
  *
  * @apiParam {Number} userId user's own userId
  * @apiParam {Number} workoutId workoutId of the added workout
@@ -98,6 +101,7 @@ router.post('/:userId/favorites', [authJwt.verifyToken], [
 /**
  * @api {delete} v1/users/:userId/favorites/:workoutId Remove workout from user's favorites
  * @apiGroup Users
+ * @apiVersion 1.0.0
  *
  * @apiParam {Number} userId user's own userId
  * @apiParam {Number} workoutId workoutId

@@ -10,6 +10,7 @@ let favoritesUrl;
 
 /**
  * Component for the favorite list
+ * @component
  * @extends React.Component
  */
 export default class Favorites extends React.Component {

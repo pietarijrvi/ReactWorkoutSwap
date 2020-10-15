@@ -1,4 +1,32 @@
-import React, { Component } from "react";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Components/Register.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Components/Register.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { Component } from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
@@ -14,9 +42,9 @@ import AuthService from "../services/auth.service";
 const required = value => {
     if (!value) {
         return (
-            <div className="alert alert-danger" role="alert">
+            &lt;div className="alert alert-danger" role="alert">
                 This field is required!
-            </div>
+            &lt;/div>
         );
     }
 };
@@ -29,9 +57,9 @@ const required = value => {
 const email = value => {
     if (!isEmail(value)) {
         return (
-            <div className="alert alert-danger" role="alert">
+            &lt;div className="alert alert-danger" role="alert">
                 This is not a valid email.
-            </div>
+            &lt;/div>
         );
     }
 };
@@ -42,11 +70,11 @@ const email = value => {
  * @returns alert div
  */
 const vusername = value => {
-    if (value.length < 3 || value.length > 20) {
+    if (value.length &lt; 3 || value.length > 20) {
         return (
-            <div className="alert alert-danger" role="alert">
+            &lt;div className="alert alert-danger" role="alert">
                 The username must be between 3 and 20 characters.
-            </div>
+            &lt;/div>
         );
     }
 };
@@ -57,11 +85,11 @@ const vusername = value => {
  * @returns alert div
  */
 const vpassword = value => {
-    if (value.length < 6 || value.length > 40) {
+    if (value.length &lt; 6 || value.length > 40) {
         return (
-            <div className="alert alert-danger" role="alert">
+            &lt;div className="alert alert-danger" role="alert">
                 The password must be between 6 and 40 characters.
-            </div>
+            &lt;/div>
         );
     }
 };
@@ -146,8 +174,8 @@ export default class Register extends Component {
                 },
                 error => {
                     const resMessage =
-                        (error.response &&
-                            error.response.data &&
+                        (error.response &amp;&amp;
+                            error.response.data &amp;&amp;
                             error.response.data.message) ||
                         error.message ||
                         error.toString();
@@ -167,25 +195,25 @@ export default class Register extends Component {
      */
     render() {
         return (
-            <div className="col-md-12 RegisterCard">
-                <div className="card card-container">
-                    <img
+            &lt;div className="col-md-12 RegisterCard">
+                &lt;div className="card card-container">
+                    &lt;img
                         src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
                         alt="profile-img"
                         className="profile-img-card"
                     />
 
-                    <Form
+                    &lt;Form
                         onSubmit={this.handleRegister}
                         ref={c => {
                             this.form = c;
                         }}
                     >
-                        {!this.state.successful && (
-                            <div>
-                                <div className="form-group">
-                                    <label htmlFor="username">Username</label>
-                                    <Input
+                        {!this.state.successful &amp;&amp; (
+                            &lt;div>
+                                &lt;div className="form-group">
+                                    &lt;label htmlFor="username">Username&lt;/label>
+                                    &lt;Input
                                         type="text"
                                         className="form-control"
                                         name="username"
@@ -193,11 +221,11 @@ export default class Register extends Component {
                                         onChange={this.onChangeUsername}
                                         validations={[required, vusername]}
                                     />
-                                </div>
+                                &lt;/div>
 
-                                <div className="form-group">
-                                    <label htmlFor="email">Email</label>
-                                    <Input
+                                &lt;div className="form-group">
+                                    &lt;label htmlFor="email">Email&lt;/label>
+                                    &lt;Input
                                         type="text"
                                         className="form-control"
                                         name="email"
@@ -205,11 +233,11 @@ export default class Register extends Component {
                                         onChange={this.onChangeEmail}
                                         validations={[required, email]}
                                     />
-                                </div>
+                                &lt;/div>
 
-                                <div className="form-group">
-                                    <label htmlFor="password">Password</label>
-                                    <Input
+                                &lt;div className="form-group">
+                                    &lt;label htmlFor="password">Password&lt;/label>
+                                    &lt;Input
                                         type="password"
                                         className="form-control"
                                         name="password"
@@ -217,17 +245,17 @@ export default class Register extends Component {
                                         onChange={this.onChangePassword}
                                         validations={[required, vpassword]}
                                     />
-                                </div>
+                                &lt;/div>
 
-                                <div className="form-group">
-                                    <button className="btn btn-primary btn-block">Sign Up</button>
-                                </div>
-                            </div>
+                                &lt;div className="form-group">
+                                    &lt;button className="btn btn-primary btn-block">Sign Up&lt;/button>
+                                &lt;/div>
+                            &lt;/div>
                         )}
 
-                        {this.state.message && (
-                            <div className="form-group">
-                                <div
+                        {this.state.message &amp;&amp; (
+                            &lt;div className="form-group">
+                                &lt;div
                                     className={
                                         this.state.successful
                                             ? "alert alert-success"
@@ -236,18 +264,40 @@ export default class Register extends Component {
                                     role="alert"
                                 >
                                     {this.state.message}
-                                </div>
-                            </div>
+                                &lt;/div>
+                            &lt;/div>
                         )}
-                        <CheckButton
+                        &lt;CheckButton
                             style={{ display: "none" }}
                             ref={c => {
                                 this.checkBtn = c;
                             }}
                         />
-                    </Form>
-                </div>
-            </div>
+                    &lt;/Form>
+                &lt;/div>
+            &lt;/div>
         );
     }
-}
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AuthService.html">AuthService</a></li><li><a href="module.html#.exports">exports</a></li><li><a href="UserService.html">UserService</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addFavoritesUrl">addFavoritesUrl</a></li><li><a href="global.html#addToFavorites">addToFavorites</a></li><li><a href="global.html#apiWorkoutsUrl">apiWorkoutsUrl</a></li><li><a href="global.html#componentDidMount">componentDidMount</a></li><li><a href="global.html#email">email</a></li><li><a href="global.html#handleLogin">handleLogin</a></li><li><a href="global.html#handleRegister">handleRegister</a></li><li><a href="global.html#logOut">logOut</a></li><li><a href="global.html#onChangeEmail">onChangeEmail</a></li><li><a href="global.html#onChangePassword">onChangePassword</a></li><li><a href="global.html#onChangeUsername">onChangeUsername</a></li><li><a href="global.html#removeFromFavorites">removeFromFavorites</a></li><li><a href="global.html#removeWorkout">removeWorkout</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#required">required</a></li><li><a href="global.html#searchWorkouts">searchWorkouts</a></li><li><a href="global.html#vpassword">vpassword</a></li><li><a href="global.html#vusername">vusername</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Thu Oct 15 2020 17:28:29 GMT+0300 (Eastern European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

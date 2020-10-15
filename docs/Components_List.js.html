@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Components/List.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Components/List.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from "react";
+import axios from 'axios';
+import Accordion from 'react-bootstrap/Accordion'
+import Card from "react-bootstrap/Card";
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
+import Col from 'react-bootstrap/Col'
+import Dropdown from "react-bootstrap/Dropdown";
+import authService from "../services/auth.service";
+import authHeader from "../services/auth-header";
+import Alert from 'react-bootstrap/Alert'
+
+/**
+ * API Call URL for all workouts
+ * @type {string}
+ */
+const apiWorkoutsUrl = "http://localhost:9000/api/v1/workouts/";
+
+/**
+ * API Call URL for a specific user's favorites
+ * @type {string}
+ */
+const addFavoritesUrl = "http://localhost:9000/api/v1/users/?/favorites";
+
+/**
+ * Component for listing workouts from API. The user can click the workouts to open more information about them.
+ * They can also add a workout in their favorites which saves the workout in another list containing only
+ * the user's favorites.
+ * @component
+ * @extends React.Component
+ */
+export default class List extends React.Component {
+
+    state = {
+        workouts: [],
+        searchText: "",
+        equipmentRequired: false,
+        favorite: false
+    };
+
+
+    /**
+     * A react lifecycle method called when the component did mount.
+     * Gets 50 workouts from the database
+     */
+    componentDidMount() {
+        this.setState({filteredContacts: this.state.workouts});
+        this.searchWorkouts();
+    }
+
+    handleChange = event => {
+        const target = event.target;
+        const name = target.name;
+        const value = event.target.type === "checkbox" ? event.target.checked : event.target.value;
+        this.setState({[name]: value});
+    };
+
+    /**
+     * Method for success alert when adding to favorites
+     */
+    onShowAddedFavorite = () => {
+        this.setState({favorite: true}, () => {
+            window.setTimeout(() => {
+                this.setState({favorite: false})
+            }, 3000)
+        });
+    };
+
+    /**
+     * Method for error alert when adding to favorites (e.g. workout is already in favorites)
+     */
+    onShowError = () => {
+        this.setState({error: true}, () => {
+            window.setTimeout(() => {
+                this.setState({error: false})
+            }, 3000)
+        });
+    };
+
+    /**
+     * Method for posting a workout into favorites
+     * @param workoutId
+     */
+    addToFavorites(workoutId) {
+        const favoritesUrl = addFavoritesUrl.replace("?", authService.getCurrentUser().id);
+        axios.post(favoritesUrl, {workoutId: workoutId}, { headers: authHeader() })
+            .then(res => {
+                this.setState({success: true});
+                this.onShowAddedFavorite()
+            }).catch(err => {
+            this.setState({error: true});
+            this.onShowError();
+            if (err.response) {
+                this.setState({errorMessage: err.response});
+                // client received an error response (5xx, 4xx)
+                console.log('post error with code', err.response);
+            } else if (err.request) {
+                this.setState({errorMessage: err.request});
+                // client never received a response, or request never left
+                console.log('communication error', err.request);
+            } else {
+                this.setState({errorMessage: 'Oops! Try again'});
+                console.log("Post error");
+            }
+        });
+    }
+
+    /**
+     * Method for filtering the workout list
+     */
+    searchWorkouts(){
+        const searchText = this.state.searchText;
+        const equipment = this.state.equipmentRequired ? 1 : 0;
+        const limit = 50;
+        axios.get(apiWorkoutsUrl, { params: { limit: limit, title:searchText, equipment: equipment} })
+            .then(res => {
+                console.log(res);
+                this.setState({workouts: res.data});
+                console.log("state", this.state.workouts);
+            }).catch(err => {
+            console.log(err);
+        });
+    }
+
+    /**
+     * Render function for the list component
+     * @returns the list
+     */
+    render() {
+
+
+        return (
+            &lt;div className="List">
+                {this.state.error &amp;&amp; &lt;Alert className="FavoriteErrorAlert" variant="danger" isopen="true">
+                    Error adding to favorites!
+                &lt;/Alert>}
+                {this.state.favorite &amp;&amp; &lt;Alert className="FavoriteSuccessAlert" variant="success" isopen="true">
+                    Added to favorites!
+                &lt;/Alert>}
+                &lt;div className="AccordionList">
+                    &lt;div className="SearchBar">
+                        &lt;Form className="SearchBarForm">
+                            &lt;Col xs="auto">
+                                &lt;Form.Control
+                                    name="searchText"
+                                    className="mb-2"
+                                    id="inlineFormInput"
+                                    placeholder="Search by name"
+                                    onChange={this.handleChange}
+                                />
+                            &lt;/Col>
+                            &lt;Col className="CheckboxColumn" xs="auto">
+                                &lt;Form.Check
+                                    name="equipmentRequired"
+                                    type="checkbox"
+                                    id="autoSizingCheck"
+                                    className="mb-2"
+                                    label="Equipment required"
+                                    onChange={this.handleChange}
+                                />
+                            &lt;/Col>
+                            &lt;Col xs="auto">
+                                &lt;Dropdown className="DropdownFilter">
+                                    &lt;Dropdown.Toggle variant="primary" id="dropdown-basic">
+                                        Date created
+                                    &lt;/Dropdown.Toggle>
+                                    &lt;Dropdown.Menu>
+                                        &lt;Dropdown.Item>Newest first&lt;/Dropdown.Item>
+                                        &lt;Dropdown.Item>Oldest first&lt;/Dropdown.Item>
+                                    &lt;/Dropdown.Menu>
+                                &lt;/Dropdown>
+                            &lt;/Col>
+                            &lt;Col xs="auto">
+                                &lt;Button onClick={() =>this.searchWorkouts()} id="ListFilterButton" variant="success" className="mb-2">
+                                    Search
+                                &lt;/Button>
+                            &lt;/Col>
+                        &lt;/Form>
+                    &lt;/div>
+                    &lt;div className="Scrollbar">
+                        {this.state.workouts.map(workout => (
+                            &lt;Accordion defaultActiveKey="1">
+                                &lt;Card>
+                                    &lt;Card.Header>
+                                        &lt;Accordion.Toggle as={Button} variant="link" eventKey="0">
+                                            {workout.title}
+                                        &lt;/Accordion.Toggle>
+                                        &lt;div className="divider"/>
+                                        &lt;Button onClick={() => this.addToFavorites(workout.id)} id="FavoriteButton">Add to favorites&lt;/Button>
+                                    &lt;/Card.Header>
+                                    &lt;Accordion.Collapse eventKey="0">
+                                        &lt;Card.Body>
+                                            {workout.description}&lt;br/>&lt;br/>
+                                            Workout duration: {workout.duration} minutes&lt;br/>
+                                            Equipment required (1 = yes, 0 = no): {workout.equipmentRequired}&lt;br/>
+                                            Workout rating: {workout.rating}&lt;br/>
+                                            Workout created: {workout.createDate}&lt;br/>
+                                            Creators UserID: {workout.createdBy}
+                                        &lt;/Card.Body>
+                                    &lt;/Accordion.Collapse>
+                                &lt;/Card>
+                            &lt;/Accordion>
+                        ))}
+                    &lt;/div>
+                &lt;/div>
+
+            &lt;/div>
+        )
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AuthService.html">AuthService</a></li><li><a href="module.html#.exports">exports</a></li><li><a href="UserService.html">UserService</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addFavoritesUrl">addFavoritesUrl</a></li><li><a href="global.html#addToFavorites">addToFavorites</a></li><li><a href="global.html#apiWorkoutsUrl">apiWorkoutsUrl</a></li><li><a href="global.html#componentDidMount">componentDidMount</a></li><li><a href="global.html#email">email</a></li><li><a href="global.html#handleLogin">handleLogin</a></li><li><a href="global.html#handleRegister">handleRegister</a></li><li><a href="global.html#logOut">logOut</a></li><li><a href="global.html#onChangeEmail">onChangeEmail</a></li><li><a href="global.html#onChangePassword">onChangePassword</a></li><li><a href="global.html#onChangeUsername">onChangeUsername</a></li><li><a href="global.html#removeFromFavorites">removeFromFavorites</a></li><li><a href="global.html#removeWorkout">removeWorkout</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#required">required</a></li><li><a href="global.html#searchWorkouts">searchWorkouts</a></li><li><a href="global.html#vpassword">vpassword</a></li><li><a href="global.html#vusername">vusername</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Thu Oct 15 2020 17:28:29 GMT+0300 (Eastern European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

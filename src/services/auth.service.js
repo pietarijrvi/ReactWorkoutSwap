@@ -38,9 +38,9 @@ class AuthService {
 
     /**
      * Registers the user
-     * @param username
-     * @param email
-     * @param password
+     * @param username - the user's username
+     * @param email - the user's email
+     * @param password - the user's password
      * @returns {Promise<AxiosResponse<T>>}
      */
     register(username, email, password) {

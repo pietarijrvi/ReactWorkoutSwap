@@ -13,11 +13,11 @@ import Favorites from "./Components/Favorites";
 import Login from "./Components/Login";
 import Register from "./Components/Register";
 import Profile from "./Components/Profile";
-import BoardUser from "./Components/Board-user";
-import BoardModerator from "./Components/Board-moderator";
-import BoardAdmin from "./Components/Board-admin";
 
-
+/**
+ * Component for the app. Contains navbar and routing, renders components based on route
+ * @extends React.Component
+ */
 export default class App extends React.Component {
     constructor(props) {
         super(props);
@@ -30,6 +30,10 @@ export default class App extends React.Component {
         };
     }
 
+    /**
+     * A react lifecycle method called when the component did mount.
+     * Sets the state of the user's role
+     */
     componentDidMount() {
         const user = AuthService.getCurrentUser();
 
@@ -42,12 +46,18 @@ export default class App extends React.Component {
         }
     }
 
+    /**
+     * Calls AuthService method logout
+     */
     logOut() {
         AuthService.logout();
     }
 
+    /**
+     * Render function for the app
+     */
     render() {
-        const {currentUser, showModeratorBoard, showAdminBoard} = this.state;
+        const {currentUser} = this.state;
 
         return (
             <Router>
@@ -78,20 +88,6 @@ export default class App extends React.Component {
                                         Favorites
                                     </Nav.Link>
                                 </NavItem>
-                                )}
-                                {showModeratorBoard && (
-                                    <NavItem>
-                                        <Nav.Link as={Link} to="/mod">
-                                            Moderator Board
-                                        </Nav.Link>
-                                    </NavItem>
-                                )}
-                                {showAdminBoard && (
-                                    <NavItem>
-                                        <Nav.Link as={Link} to="/admin">
-                                            Admin Board
-                                        </Nav.Link>
-                                    </NavItem>
                                 )}
                                 {currentUser ? (
                                         <NavItem>
@@ -141,9 +137,6 @@ export default class App extends React.Component {
                         <Route exact path="/login" component={Login}/>
                         <Route exact path="/register" component={Register}/>
                         <Route exact path="/profile" component={Profile}/>
-                        <Route path="/user" component={BoardUser}/>
-                        <Route path="/mod" component={BoardModerator}/>
-                        <Route path="/admin" component={BoardAdmin}/>
                     </div>
                 </div>
             </Router>

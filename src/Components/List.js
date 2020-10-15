@@ -10,10 +10,24 @@ import authService from "../services/auth.service";
 import authHeader from "../services/auth-header";
 import Alert from 'react-bootstrap/Alert'
 
+/**
+ * API Call URL for all workouts
+ * @type {string}
+ */
 const apiWorkoutsUrl = "http://localhost:9000/api/v1/workouts/";
+
+/**
+ * API Call URL for a specific user's favorites
+ * @type {string}
+ */
 const addFavoritesUrl = "http://localhost:9000/api/v1/users/?/favorites";
 
-
+/**
+ * Component for listing workouts from API. The user can click the workouts to open more information about them.
+ * They can also add a workout in their favorites which saves the workout in another list containing only
+ * the user's favorites.
+ * @extends React.Component
+ */
 export default class List extends React.Component {
 
     state = {
@@ -23,6 +37,10 @@ export default class List extends React.Component {
     };
 
 
+    /**
+     * A react lifecycle method called when the component did mount.
+     * Gets 50 workouts from the database
+     */
     componentDidMount() {
         this.setState({filteredContacts: this.state.workouts});
         axios.get(apiWorkoutsUrl, { params: { limit: 50} })
@@ -37,11 +55,12 @@ export default class List extends React.Component {
     }
 
     handleChange = event => {
-        //this.setState({description: event.target.value});
-        //this.setState({workoutSelected: event.target.value});
         this.setState({searchText: event.target.value});
     };
 
+    /**
+     * Method for success alert when adding to favorites
+     */
     onShowAddedFavorite = () => {
         this.setState({favorite: true}, () => {
             window.setTimeout(() => {
@@ -50,6 +69,9 @@ export default class List extends React.Component {
         });
     };
 
+    /**
+     * Method for error alert when adding to favorites (e.g. workout is already in favorites)
+     */
     onShowError = () => {
         this.setState({error: true}, () => {
             window.setTimeout(() => {
@@ -58,6 +80,10 @@ export default class List extends React.Component {
         });
     };
 
+    /**
+     * Method for posting a workout into favorites
+     * @param workoutId
+     */
     addToFavorites(workoutId) {
         const favoritesUrl = addFavoritesUrl.replace("?", authService.getCurrentUser().id);
         axios.post(favoritesUrl, {workoutId: workoutId}, { headers: authHeader() })
@@ -82,6 +108,9 @@ export default class List extends React.Component {
         });
     }
 
+    /**
+     * Method for filtering the workout list
+     */
     searchClick(){
         const searchText = this.state.searchText;
         axios.get(apiWorkoutsUrl, { params: { limit: 50, title:searchText} })
@@ -94,6 +123,10 @@ export default class List extends React.Component {
         });
     }
 
+    /**
+     * Render function for the list component
+     * @returns the list
+     */
     render() {
 
 

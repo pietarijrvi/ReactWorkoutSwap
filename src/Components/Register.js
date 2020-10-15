@@ -6,6 +6,11 @@ import { isEmail } from "validator";
 
 import AuthService from "../services/auth.service";
 
+/**
+ * Returns an error alert if a field in the login form hasn't been filled
+ * @param value - checks if a field has been filled
+ * @returns alert
+ */
 const required = value => {
     if (!value) {
         return (
@@ -16,6 +21,11 @@ const required = value => {
     }
 };
 
+/**
+ * Returns an alert if email is not valid
+ * @param value - email input by user
+ * @returns alert div
+ */
 const email = value => {
     if (!isEmail(value)) {
         return (
@@ -26,6 +36,11 @@ const email = value => {
     }
 };
 
+/**
+ * Returns alert if username isn't between 3 and 20 characters
+ * @param value - username input by user
+ * @returns alert div
+ */
 const vusername = value => {
     if (value.length < 3 || value.length > 20) {
         return (
@@ -36,6 +51,11 @@ const vusername = value => {
     }
 };
 
+/**
+ * Returns alert if password isn't between 6 and 40 characters
+ * @param value - password input by user
+ * @returns alert div
+ */
 const vpassword = value => {
     if (value.length < 6 || value.length > 40) {
         return (
@@ -46,6 +66,10 @@ const vpassword = value => {
     }
 };
 
+/**
+ * Component for registering an account
+ * @extends Component
+ */
 export default class Register extends Component {
     constructor(props) {
         super(props);
@@ -63,24 +87,40 @@ export default class Register extends Component {
         };
     }
 
+    /**
+     * Method for setting username field value to state
+     * @param e - username input by user
+     */
     onChangeUsername(e) {
         this.setState({
             username: e.target.value
         });
     }
 
+    /**
+     * Method for setting email field value to state
+     * @param e - email input by user
+     */
     onChangeEmail(e) {
         this.setState({
             email: e.target.value
         });
     }
 
+    /**
+     * Method for setting password field value to state
+     * @param e - password input by user
+     */
     onChangePassword(e) {
         this.setState({
             password: e.target.value
         });
     }
 
+    /**
+     * Uses AuthService to register the new user
+     * @param e
+     */
     handleRegister(e) {
         e.preventDefault();
 
@@ -120,6 +160,10 @@ export default class Register extends Component {
         }
     }
 
+    /**
+     * Render function for the register component
+     * @returns the register form
+     */
     render() {
         return (
             <div className="col-md-12 RegisterCard">

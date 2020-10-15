@@ -5,6 +5,10 @@ import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import AuthService from "../services/auth.service";
 
+/**
+ * Component for the homepage
+ * @extends React.Component
+ */
 export default class Home extends React.Component {
     constructor(props) {
         super(props);
@@ -14,6 +18,10 @@ export default class Home extends React.Component {
         };
     }
 
+    /**
+     * A react lifecycle method called when the component did mount.
+     * Used to check if the user's logged in.
+     */
     componentDidMount() {
         const user = AuthService.getCurrentUser();
 
@@ -40,6 +48,10 @@ export default class Home extends React.Component {
         );
     }
 
+    /**
+     * Render function for the profile component
+     * @returns the profile
+     */
     render() {
         const {currentUser} = this.state;
         return (

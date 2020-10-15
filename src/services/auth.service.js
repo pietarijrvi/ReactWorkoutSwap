@@ -2,7 +2,18 @@ import axios from "axios";
 
 const API_URL = "http://localhost:9000/api/auth/";
 
+/**
+ * Class containing methods used to make login/register requests
+ * auth.service methods use axios to make HTTP requests. It also stores or gets JWT from Browser Local Storage inside these methods.
+ */
 class AuthService {
+
+    /**
+     * Stores the user in browser local storage
+     * @param email - the user's email
+     * @param password - the user's password
+     * @returns {Promise<AxiosResponse<T> | never>}
+     */
     login(email, password) {
         return axios
             .post(API_URL + "signin", {
@@ -18,10 +29,20 @@ class AuthService {
             });
     }
 
+    /**
+     * Removes user from browser local storage
+     */
     logout() {
         localStorage.removeItem("user");
     }
 
+    /**
+     * Registers the user
+     * @param username
+     * @param email
+     * @param password
+     * @returns {Promise<AxiosResponse<T>>}
+     */
     register(username, email, password) {
         return axios.post(API_URL + "signup", {
             username: username,
@@ -30,6 +51,10 @@ class AuthService {
         });
     }
 
+    /**
+     * Returns the current user from browser local storage
+     * @returns {any}
+     */
     getCurrentUser() {
         return JSON.parse(localStorage.getItem('user'));
     }

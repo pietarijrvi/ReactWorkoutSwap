@@ -11,13 +11,20 @@ import authService from '../services/auth.service';
 
 let favoritesUrl;
 
-
+/**
+ * Component for the favorite list
+ * @extends React.Component
+ */
 export default class Favorites extends React.Component {
 
     state = {
         workouts: [],
     };
 
+    /**
+     * A react lifecycle method called when the component did mount.
+     * Gets favorites from the database
+     */
     componentDidMount() {
         favoritesUrl = "http://localhost:9000/api/v1/users/" + authService.getCurrentUser().id + "/favorites";
         this.setState({ filteredContacts: this.state.workouts });
@@ -32,11 +39,10 @@ export default class Favorites extends React.Component {
 
     }
 
-    handleChange = event => {
-        this.setState({description: event.target.value});
-        this.setState({workoutSelected: event.target.value});
-    };
-
+    /**
+     * Method used in removing a workout from favorites
+     * @param workoutToRemove - workout that the user wants to remove from favorites
+     */
     removeWorkout(workoutToRemove) {
         this.setState(prevState => {
             const workouts = prevState.workouts.filter(workout => workout.id !== workoutToRemove);
@@ -44,6 +50,10 @@ export default class Favorites extends React.Component {
         });
     };
 
+    /**
+     * Method for removing a workout from the user's favorites. Deletes the workout from the favorites table in the database.
+     * @param workoutId - Id of the workout that the user wants to remove from favorites
+     */
     removeFromFavorites(workoutId) {
         axios.delete(favoritesUrl+"/"+workoutId, {headers: authHeader()} )
             .then(res => {
@@ -66,7 +76,11 @@ export default class Favorites extends React.Component {
         });
     }
 
-        render() {
+    /**
+     * Render function for the favorites list
+     * @returns div with favorites list
+     */
+    render() {
 
 
             return (

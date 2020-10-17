@@ -5,7 +5,6 @@ import Card from "react-bootstrap/Card";
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
-import Dropdown from "react-bootstrap/Dropdown";
 import authService from "../services/auth.service";
 import authHeader from "../services/auth-header";
 import Alert from 'react-bootstrap/Alert'
@@ -158,17 +157,6 @@ export default class List extends React.Component {
                                     label="Equipment required"
                                     onChange={this.handleChange}
                                 />
-                            </Col>
-                            <Col xs="auto">
-                                <Dropdown className="DropdownFilter">
-                                    <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                                        Date created
-                                    </Dropdown.Toggle>
-                                    <Dropdown.Menu>
-                                        <Dropdown.Item>Newest first</Dropdown.Item>
-                                        <Dropdown.Item>Oldest first</Dropdown.Item>
-                                    </Dropdown.Menu>
-                                </Dropdown>
                             </Col>
                             <Col xs="auto">
                                 <Button onClick={() =>this.searchWorkouts()} id="ListFilterButton" variant="success" className="mb-2">

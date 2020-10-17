@@ -1,6 +1,12 @@
 {
   "name": "api",
   "version": "0.0.0",
+  "apidoc": {
+    "name": "WorkoutSwap API",
+    "title": "WorkoutSwap API",
+    "url" : "http://localhost:9000/",
+    "version": "1.0.0"
+  },
   "private": true,
   "scripts": {
     "start": "node ./bin/www"

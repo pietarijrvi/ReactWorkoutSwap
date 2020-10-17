@@ -3,9 +3,6 @@ import axios from 'axios';
 import Accordion from 'react-bootstrap/Accordion'
 import Card from "react-bootstrap/Card";
 import Button from 'react-bootstrap/Button'
-import Form from 'react-bootstrap/Form'
-import Col from 'react-bootstrap/Col'
-import Dropdown from "react-bootstrap/Dropdown";
 import authHeader from "../services/auth-header";
 import authService from '../services/auth.service';
 
@@ -13,6 +10,7 @@ let favoritesUrl;
 
 /**
  * Component for the favorite list
+ * @component
  * @extends React.Component
  */
 export default class Favorites extends React.Component {
@@ -87,41 +85,6 @@ export default class Favorites extends React.Component {
                 <div className="List">
 
                     <div className="AccordionList">
-                        <div className="SearchBar">
-                            <Form className="SearchBarForm">
-                                <Col xs="auto">
-                                    <Form.Control
-                                        className="mb-2"
-                                        id="inlineFormInput"
-                                        placeholder="Search by name"
-                                    />
-                                </Col>
-                                <Col className="CheckboxColumn" xs="auto">
-                                    <Form.Check
-                                        type="checkbox"
-                                        id="autoSizingCheck"
-                                        className="mb-2"
-                                        label="Equipment required"
-                                    />
-                                </Col>
-                                <Col xs="auto">
-                                    <Dropdown className="DropdownFilter">
-                                        <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                                            Date created
-                                        </Dropdown.Toggle>
-                                        <Dropdown.Menu>
-                                            <Dropdown.Item>Newest first</Dropdown.Item>
-                                            <Dropdown.Item>Oldest first</Dropdown.Item>
-                                        </Dropdown.Menu>
-                                    </Dropdown>
-                                </Col>
-                                <Col xs="auto">
-                                    <Button id="ListFilterButton" variant="success" type="submit" className="mb-2">
-                                        Filter
-                                    </Button>
-                                </Col>
-                            </Form>
-                        </div>
                         <div className="Scrollbar">
 
                             {this.state.workouts.map(workout => (

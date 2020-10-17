@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: App.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: App.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from "react";
+import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
+import Home from "./Components/Home";
+import AuthService from "./services/auth.service";
+
+import "bootstrap/dist/css/bootstrap.min.css";
+import NavItem from "react-bootstrap/NavItem";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import Add from "./Components/Add";
+import List from "./Components/List";
+import Favorites from "./Components/Favorites";
+import Login from "./Components/Login";
+import Register from "./Components/Register";
+import Profile from "./Components/Profile";
+
+/**
+ * Component for the app. Contains navbar and routing, renders components based on route
+ * @extends React.Component
+ */
+export default class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.logOut = this.logOut.bind(this);
+
+        this.state = {
+            showModeratorBoard: false,
+            showAdminBoard: false,
+            currentUser: undefined,
+        };
+    }
+
+    /**
+     * A react lifecycle method called when the component did mount.
+     * Sets the state of the user's role
+     */
+    componentDidMount() {
+        const user = AuthService.getCurrentUser();
+
+        if (user) {
+            this.setState({
+                currentUser: user,
+                showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
+                showAdminBoard: user.roles.includes("ROLE_ADMIN"),
+            });
+        }
+    }
+
+    /**
+     * Calls AuthService method logout
+     */
+    logOut() {
+        AuthService.logout();
+    }
+
+    /**
+     * Render function for the app
+     */
+    render() {
+        const {currentUser} = this.state;
+
+        return (
+            &lt;Router>
+                &lt;div className="App">
+                    &lt;div className="Header">
+                        &lt;Navbar bg="transparent" variant="light">
+                            &lt;Navbar.Brand as={Link} to="/home">
+                                WorkoutSwap
+                            &lt;/Navbar.Brand>
+                            &lt;Nav className="mr-auto">
+                                {currentUser &amp;&amp;(
+                                &lt;NavItem>
+                                    &lt;Nav.Link as={Link} to="/list">
+                                        List
+                                    &lt;/Nav.Link>
+                                &lt;/NavItem>
+                                )}
+                                {currentUser &amp;&amp;(
+                                &lt;NavItem>
+                                    &lt;Nav.Link as={Link} to="/add">
+                                        Add
+                                    &lt;/Nav.Link>
+                                &lt;/NavItem>
+                                )}
+                                {currentUser &amp;&amp;(
+                                &lt;NavItem>
+                                    &lt;Nav.Link as={Link} to="/favorites">
+                                        Favorites
+                                    &lt;/Nav.Link>
+                                &lt;/NavItem>
+                                )}
+                                {currentUser ? (
+                                        &lt;NavItem>
+                                            &lt;Nav.Link as={Link} to="/profile">
+                                                Profile
+                                            &lt;/Nav.Link>
+                                        &lt;/NavItem>
+                                ) : (
+                                        &lt;NavItem>
+                                            &lt;Nav.Link as={Link} to="/login">
+                                                Login
+                                            &lt;/Nav.Link>
+                                        &lt;/NavItem>
+                                )}
+                                {currentUser ? (
+
+                                        &lt;NavItem>
+                                            &lt;a href="/login" className="nav-link" onClick={this.logOut}>
+                                                LogOut
+                                            &lt;/a>
+                                        &lt;/NavItem>
+                                ) : (
+                                        &lt;NavItem>
+                                            &lt;Nav.Link as={Link} to="/register">
+                                                Sign Up
+                                            &lt;/Nav.Link>
+                                        &lt;/NavItem>
+                                )}
+                            &lt;/Nav>
+                        &lt;/Navbar>
+                    &lt;/div>
+                    &lt;div className="Main">
+                        &lt;Switch>
+                            &lt;Route exact path={["/home", "/"]}>
+                                &lt;Home/>
+                            &lt;/Route>
+                            &lt;Route exact path="/list">
+                                &lt;List/>
+                            &lt;/Route>
+                            &lt;Route exact path="/add">
+                                &lt;Add/>
+                            &lt;/Route>
+                            &lt;Route exact path="/favorites">
+                                &lt;Favorites/>
+                            &lt;/Route>
+                        &lt;/Switch>
+                        &lt;Route exact path="/login" component={Login}/>
+                        &lt;Route exact path="/register" component={Register}/>
+                        &lt;Route exact path="/profile" component={Profile}/>
+                    &lt;/div>
+                &lt;/div>
+            &lt;/Router>
+        );
+    }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AuthService.html">AuthService</a></li><li><a href="module.html#.exports">exports</a></li><li><a href="UserService.html">UserService</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addFavoritesUrl">addFavoritesUrl</a></li><li><a href="global.html#addToFavorites">addToFavorites</a></li><li><a href="global.html#apiWorkoutsUrl">apiWorkoutsUrl</a></li><li><a href="global.html#componentDidMount">componentDidMount</a></li><li><a href="global.html#email">email</a></li><li><a href="global.html#handleLogin">handleLogin</a></li><li><a href="global.html#handleRegister">handleRegister</a></li><li><a href="global.html#logOut">logOut</a></li><li><a href="global.html#onChangeEmail">onChangeEmail</a></li><li><a href="global.html#onChangePassword">onChangePassword</a></li><li><a href="global.html#onChangeUsername">onChangeUsername</a></li><li><a href="global.html#removeFromFavorites">removeFromFavorites</a></li><li><a href="global.html#removeWorkout">removeWorkout</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#required">required</a></li><li><a href="global.html#searchWorkouts">searchWorkouts</a></li><li><a href="global.html#vpassword">vpassword</a></li><li><a href="global.html#vusername">vusername</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Thu Oct 15 2020 17:28:29 GMT+0300 (Eastern European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

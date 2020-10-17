@@ -68,6 +68,7 @@ const vpassword = value => {
 
 /**
  * Component for registering an account
+ * @component
  * @extends Component
  */
 export default class Register extends Component {

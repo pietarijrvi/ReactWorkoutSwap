@@ -8,6 +8,7 @@ const connect = require('../../dbConnection.js');
 /**
  * @api {get} v1/workouts/ Request all workouts (best rating first)
  * @apiGroup Workouts
+ * @apiVersion 1.0.0
  *
  * @apiParam {String} title workout title (or part of it)
  * @apiParam {Boolean} equipment true:required.
@@ -64,6 +65,7 @@ router.get('/', function (req, res) {
 /**
  * @api {get} v1/workouts/:id Request all workouts created by a user
  * @apiGroup Workouts
+ * @apiVersion 1.0.0
  *
  * @apiParam {Number} id Users unique ID.
  *
@@ -99,6 +101,7 @@ router.get('/:userId', function (req, res) {
 /**
  * @api {post} v1/workouts/ Post new workout
  * @apiGroup Workouts
+ * @apiVersion 1.0.0
  *
  * @apiParam {Number} title workout title
  * @apiParam {Number} description workout description

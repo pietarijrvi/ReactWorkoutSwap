@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Components/Register.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Components/Register.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { Component } from "react";
+import Form from "react-validation/build/form";
+import Input from "react-validation/build/input";
+import CheckButton from "react-validation/build/button";
+import { isEmail } from "validator";
+
+import AuthService from "../services/auth.service";
+
+/**
+ * Returns an error alert if a field in the login form hasn't been filled
+ * @param value - checks if a field has been filled
+ * @returns alert
+ */
+const required = value => {
+    if (!value) {
+        return (
+            &lt;div className="alert alert-danger" role="alert">
+                This field is required!
+            &lt;/div>
+        );
+    }
+};
+
+/**
+ * Returns an alert if email is not valid
+ * @param value - email input by user
+ * @returns alert div
+ */
+const email = value => {
+    if (!isEmail(value)) {
+        return (
+            &lt;div className="alert alert-danger" role="alert">
+                This is not a valid email.
+            &lt;/div>
+        );
+    }
+};
+
+/**
+ * Returns alert if username isn't between 3 and 20 characters
+ * @param value - username input by user
+ * @returns alert div
+ */
+const vusername = value => {
+    if (value.length &lt; 3 || value.length > 20) {
+        return (
+            &lt;div className="alert alert-danger" role="alert">
+                The username must be between 3 and 20 characters.
+            &lt;/div>
+        );
+    }
+};
+
+/**
+ * Returns alert if password isn't between 6 and 40 characters
+ * @param value - password input by user
+ * @returns alert div
+ */
+const vpassword = value => {
+    if (value.length &lt; 6 || value.length > 40) {
+        return (
+            &lt;div className="alert alert-danger" role="alert">
+                The password must be between 6 and 40 characters.
+            &lt;/div>
+        );
+    }
+};
+
+/**
+ * Component for registering an account
+ * @component
+ * @extends Component
+ */
+export default class Register extends Component {
+    constructor(props) {
+        super(props);
+        this.handleRegister = this.handleRegister.bind(this);
+        this.onChangeUsername = this.onChangeUsername.bind(this);
+        this.onChangeEmail = this.onChangeEmail.bind(this);
+        this.onChangePassword = this.onChangePassword.bind(this);
+
+        this.state = {
+            username: "",
+            email: "",
+            password: "",
+            successful: false,
+            message: ""
+        };
+    }
+
+    /**
+     * Method for setting username field value to state
+     * @param e - username input by user
+     */
+    onChangeUsername(e) {
+        this.setState({
+            username: e.target.value
+        });
+    }
+
+    /**
+     * Method for setting email field value to state
+     * @param e - email input by user
+     */
+    onChangeEmail(e) {
+        this.setState({
+            email: e.target.value
+        });
+    }
+
+    /**
+     * Method for setting password field value to state
+     * @param e - password input by user
+     */
+    onChangePassword(e) {
+        this.setState({
+            password: e.target.value
+        });
+    }
+
+    /**
+     * Uses AuthService to register the new user
+     * @param e
+     */
+    handleRegister(e) {
+        e.preventDefault();
+
+        this.setState({
+            message: "",
+            successful: false
+        });
+
+        this.form.validateAll();
+
+        if (this.checkBtn.context._errors.length === 0) {
+            AuthService.register(
+                this.state.username,
+                this.state.email,
+                this.state.password
+            ).then(
+                response => {
+                    this.setState({
+                        message: response.data.message,
+                        successful: true
+                    });
+                },
+                error => {
+                    const resMessage =
+                        (error.response &amp;&amp;
+                            error.response.data &amp;&amp;
+                            error.response.data.message) ||
+                        error.message ||
+                        error.toString();
+
+                    this.setState({
+                        successful: false,
+                        message: resMessage
+                    });
+                }
+            );
+        }
+    }
+
+    /**
+     * Render function for the register component
+     * @returns the register form
+     */
+    render() {
+        return (
+            &lt;div className="col-md-12 RegisterCard">
+                &lt;div className="card card-container">
+                    &lt;img
+                        src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+                        alt="profile-img"
+                        className="profile-img-card"
+                    />
+
+                    &lt;Form
+                        onSubmit={this.handleRegister}
+                        ref={c => {
+                            this.form = c;
+                        }}
+                    >
+                        {!this.state.successful &amp;&amp; (
+                            &lt;div>
+                                &lt;div className="form-group">
+                                    &lt;label htmlFor="username">Username&lt;/label>
+                                    &lt;Input
+                                        type="text"
+                                        className="form-control"
+                                        name="username"
+                                        value={this.state.username}
+                                        onChange={this.onChangeUsername}
+                                        validations={[required, vusername]}
+                                    />
+                                &lt;/div>
+
+                                &lt;div className="form-group">
+                                    &lt;label htmlFor="email">Email&lt;/label>
+                                    &lt;Input
+                                        type="text"
+                                        className="form-control"
+                                        name="email"
+                                        value={this.state.email}
+                                        onChange={this.onChangeEmail}
+                                        validations={[required, email]}
+                                    />
+                                &lt;/div>
+
+                                &lt;div className="form-group">
+                                    &lt;label htmlFor="password">Password&lt;/label>
+                                    &lt;Input
+                                        type="password"
+                                        className="form-control"
+                                        name="password"
+                                        value={this.state.password}
+                                        onChange={this.onChangePassword}
+                                        validations={[required, vpassword]}
+                                    />
+                                &lt;/div>
+
+                                &lt;div className="form-group">
+                                    &lt;button className="btn btn-primary btn-block">Sign Up&lt;/button>
+                                &lt;/div>
+                            &lt;/div>
+                        )}
+
+                        {this.state.message &amp;&amp; (
+                            &lt;div className="form-group">
+                                &lt;div
+                                    className={
+                                        this.state.successful
+                                            ? "alert alert-success"
+                                            : "alert alert-danger"
+                                    }
+                                    role="alert"
+                                >
+                                    {this.state.message}
+                                &lt;/div>
+                            &lt;/div>
+                        )}
+                        &lt;CheckButton
+                            style={{ display: "none" }}
+                            ref={c => {
+                                this.checkBtn = c;
+                            }}
+                        />
+                    &lt;/Form>
+                &lt;/div>
+            &lt;/div>
+        );
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AuthService.html">AuthService</a></li><li><a href="module.html#.exports">exports</a></li><li><a href="UserService.html">UserService</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addFavoritesUrl">addFavoritesUrl</a></li><li><a href="global.html#addToFavorites">addToFavorites</a></li><li><a href="global.html#apiWorkoutsUrl">apiWorkoutsUrl</a></li><li><a href="global.html#componentDidMount">componentDidMount</a></li><li><a href="global.html#email">email</a></li><li><a href="global.html#handleLogin">handleLogin</a></li><li><a href="global.html#handleRegister">handleRegister</a></li><li><a href="global.html#logOut">logOut</a></li><li><a href="global.html#onChangeEmail">onChangeEmail</a></li><li><a href="global.html#onChangePassword">onChangePassword</a></li><li><a href="global.html#onChangeUsername">onChangeUsername</a></li><li><a href="global.html#removeFromFavorites">removeFromFavorites</a></li><li><a href="global.html#removeWorkout">removeWorkout</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#required">required</a></li><li><a href="global.html#searchWorkouts">searchWorkouts</a></li><li><a href="global.html#vpassword">vpassword</a></li><li><a href="global.html#vusername">vusername</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Thu Oct 15 2020 17:28:29 GMT+0300 (Eastern European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -22,6 +22,7 @@ const required = value => {
 
 /**
  * Component for logging in
+ * @component
  * @extends Component
  */
 export default class Login extends Component {

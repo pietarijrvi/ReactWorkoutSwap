@@ -5,7 +5,6 @@ import Card from "react-bootstrap/Card";
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
-import Dropdown from "react-bootstrap/Dropdown";
 import authService from "../services/auth.service";
 import authHeader from "../services/auth-header";
 import Alert from 'react-bootstrap/Alert'
@@ -26,6 +25,7 @@ const addFavoritesUrl = "http://localhost:9000/api/v1/users/?/favorites";
  * Component for listing workouts from API. The user can click the workouts to open more information about them.
  * They can also add a workout in their favorites which saves the workout in another list containing only
  * the user's favorites.
+ * @component
  * @extends React.Component
  */
 export default class List extends React.Component {
@@ -33,7 +33,7 @@ export default class List extends React.Component {
     state = {
         workouts: [],
         searchText: "",
-        equipmentRequired: "",
+        equipmentRequired: false,
         favorite: false
     };
 
@@ -44,15 +44,7 @@ export default class List extends React.Component {
      */
     componentDidMount() {
         this.setState({filteredContacts: this.state.workouts});
-        axios.get(apiWorkoutsUrl, { params: { limit: 50} })
-            .then(res => {
-                console.log(res);
-                this.setState({workouts: res.data});
-                console.log("state", this.state.workouts);
-            }).catch(err => {
-            console.log(err);
-        });
-
+        this.searchWorkouts();
     }
 
     handleChange = event => {
@@ -115,7 +107,7 @@ export default class List extends React.Component {
     /**
      * Method for filtering the workout list
      */
-    searchClick(){
+    searchWorkouts(){
         const searchText = this.state.searchText;
         const equipment = this.state.equipmentRequired ? 1 : 0;
         const limit = 50;
@@ -167,18 +159,7 @@ export default class List extends React.Component {
                                 />
                             </Col>
                             <Col xs="auto">
-                                <Dropdown className="DropdownFilter">
-                                    <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                                        Date created
-                                    </Dropdown.Toggle>
-                                    <Dropdown.Menu>
-                                        <Dropdown.Item>Newest first</Dropdown.Item>
-                                        <Dropdown.Item>Oldest first</Dropdown.Item>
-                                    </Dropdown.Menu>
-                                </Dropdown>
-                            </Col>
-                            <Col xs="auto">
-                                <Button onClick={() =>this.searchClick()} id="ListFilterButton" variant="success" className="mb-2">
+                                <Button onClick={() =>this.searchWorkouts()} id="ListFilterButton" variant="success" className="mb-2">
                                     Search
                                 </Button>
                             </Col>

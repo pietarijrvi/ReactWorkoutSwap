@@ -7,6 +7,7 @@ import AuthService from "../services/auth.service";
 
 /**
  * Component for the homepage
+ * @component
  * @extends React.Component
  */
 export default class Home extends React.Component {

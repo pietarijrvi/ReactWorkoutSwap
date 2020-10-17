@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.20.0",
     "bcryptjs": "^2.4.3",
+    "better-docs": "^2.3.2",
     "bootstrap": "^4.5.2",
     "chai": "^4.2.0",
     "jsdoc": "^3.6.6",
@@ -23,7 +24,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "npx mocha",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "docs": "jsdoc -c jsdoc.conf.json"
   },
   "eslintConfig": {
     "extends": "react-app"
